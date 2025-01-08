@@ -6,15 +6,15 @@ export const POST = async (req: Request) => {
     try {
         await DBconnect();
 
-        const { firstName, lastName, mobileNumber, confirmPassword, userType} = await req.json();
+        const { firstName, lastName, mobileNumber, email, confirmPassword, userType } = await req.json();
 
         const password = confirmPassword;
 
-        const newUser = { firstName, lastName, mobileNumber, password, userType};
-        
+        const newUser = { firstName, lastName, mobileNumber, email, password, userType };
+
         console.log("User to save:", newUser);
 
-        const createUser = await User.insertMany(newUser);
+        const createUser = await User.create(newUser);
 
         return NextResponse.json({ createUser }, { status: 200 });
     } catch (error: any) {

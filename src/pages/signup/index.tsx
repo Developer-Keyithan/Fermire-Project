@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './SignUp.css'
 import Link from 'next/link';
 
-import { MdOutlineLogin } from "react-icons/md";
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
@@ -15,15 +15,18 @@ import { RiMoonClearFill } from "react-icons/ri";
 import Toggle from '../../../Components/Toggle/Toggle';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState('');
     const [mobileNumber, setMobileNumber] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [userType, setUserType] = useState('consumer');
+    const [showPassword, setShowPassword] = useState(false);
 
     const router = useRouter();
 
@@ -33,14 +36,26 @@ const SignUp = () => {
         message = "Passwords are not match"
     }
 
+    const handleShowPassword = () => setShowPassword(!showPassword);
+
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/user', { firstName, lastName, mobileNumber, confirmPassword, userType })
+            const response = await axios.post('/api/user', { firstName, lastName, email, mobileNumber, confirmPassword, userType })
 
             if (response.status === 200) {
                 router.push('/products')
+                toast.success('User account successfully created!', {
+                    style: { width: '600px', height: '100px', display: 'flex', justifyContent: 'center', background: 'darkgreen' },
+                });
             }
+
+            if(response.status === 500) {
+                toast('Failed to create account. Try again!'), {
+                    style: { width: '600px', height: '100px', display: 'flex', justifyContent: 'center', background: 'darkred' },
+                };
+            }
+
         } catch (err) {
             console.log(err)
         }
@@ -50,31 +65,35 @@ const SignUp = () => {
         <div className='signup-container'>
             <div className="signup-content-container">
                 <div className="signup-content">
-                    <h1>Sign Up</h1>
+                    <h1 className='font-semibold'>Create an Account</h1>
                     <form onSubmit={handleSubmit} method='POST' className="signup-form">
                         <div className='name-container'>
                             <div className="first-name">
                                 <label htmlFor="first-name">First Name</label>
-                                <input onChange={(e) => setFirstName(e.target.value)} className='text-input name' type="text" name="first-name" id="" placeholder='Enter Your First Name' />
+                                <input onChange={(e) => setFirstName(e.target.value)} className='text-input name' type="text" name="first-name" id="" placeholder='Enter Your First Name' required />
                             </div>
 
                             <div className="first-name">
                                 <label htmlFor="last-name">Last Name</label>
-                                <input onChange={(e) => setLastName(e.target.value)} className='text-input name' type="text" name="last-name" id="" placeholder='Enter Your Last Name' />
+                                <input onChange={(e) => setLastName(e.target.value)} className='text-input name' type="text" name="last-name" id="" placeholder='Enter Your Last Name' required />
                             </div>
                         </div>
+
+                        <label htmlFor="mobile-number">E-mail</label>
+                        <input onChange={(e) => setEmail(e.target.value)} className='text-input' type="email" name="mobile-number" placeholder='Enter Your E-mail' />
+
                         <label htmlFor="mobile-number">Mobile Number</label>
-                        <input onChange={(e) => setMobileNumber(e.target.value)} className='text-input' type="number" name="mobile-number" placeholder='Enter Your Mobile Number' />
+                        <input onChange={(e) => setMobileNumber(e.target.value)} className='text-input' type="number" name="mobile-number" placeholder='Enter Your Mobile Number' required />
 
                         <label htmlFor="password">Password</label>
-                        <input onChange={(e) => setPassword(e.target.value)} className='text-input' type="password" name="password" placeholder='Enter Your Password' />
+                        <input onChange={(e) => setPassword(e.target.value)} className='text-input' type={showPassword ? 'text' : 'password'} name="password" placeholder='Enter Your Password' required />
 
                         <label htmlFor="password">Confirm Password</label>
-                        <input onChange={(e) => setConfirmPassword(e.target.value)} className='text-input' type="password" name="password" placeholder='Re-enter Your Password' />
-                        <p>{message}</p>
-                        <div className='show-password'><input onChange={(e) => setFirstName(e.target.value)} type="checkbox" name="show-password" id="" /><p>Show Password</p></div>
+                        <input onChange={(e) => setConfirmPassword(e.target.value)} className='text-input' type={showPassword ? 'text' : 'password'} name="password" placeholder='Re-enter Your Password' required />
+                        <p className='text-red-700 mt-1'>{message}</p>
+                        <div className=' show-passwords'><input onChange={handleShowPassword} type="checkbox" name="show-password" id="" /><p>Show Passwords</p></div>
 
-                        <button className='signup-btn' type='submit'>Sign Up <MdOutlineLogin /></button>
+                        <button className='signup-btn' type='submit'>Create Account <MdOutlineAccountBalanceWallet /></button>
                     </form>
 
                     <div className="api-btn">
