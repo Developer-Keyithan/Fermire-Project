@@ -121,7 +121,7 @@ const Login: React.FC = () => {
             </div>
 
             <Toggle link="/" position={{ left: '10px' }} icon={<TiHome />} />
-            <Toggle link="/Products" position={{ left: '60px' }} icon={<HiMiniShoppingBag />} />
+            <Toggle link="/products" position={{ left: '60px' }} icon={<HiMiniShoppingBag />} />
             <Toggle position={{ left: '110px' }} icon={<RiMoonClearFill />} />
         </div>
     );
