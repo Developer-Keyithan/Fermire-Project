@@ -15,6 +15,7 @@ import { RiMoonClearFill } from "react-icons/ri";
 import Toggle from '../../../Components/Toggle/Toggle';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 const SignUp = () => {
 
@@ -39,8 +40,18 @@ const SignUp = () => {
             const response = await axios.post('/api/user', { firstName, lastName, mobileNumber, confirmPassword, userType })
 
             if (response.status === 200) {
-                router.push('/products')
+                // router.push('/products')
+                toast.success('User account successfully created!', {
+                    style: { width: '600px', height: '100px', display: 'flex', justifyContent: 'center', background: 'darkgreen' },
+                });
             }
+
+            if(response.status === 500) {
+                toast('Failed to create account. Try again!'), {
+                    style: { width: '600px', height: '100px', display: 'flex', justifyContent: 'center', background: 'darkred' },
+                };
+            }
+
         } catch (err) {
             console.log(err)
         }
