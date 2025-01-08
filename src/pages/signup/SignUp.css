@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
     margin: 0;
     padding: 0;
@@ -87,9 +91,9 @@
     width: 17rem;
 }
 
-.show-password {
+.show-passwords {
     display: flex;
-    gap: 305px;
+    gap: 5px;
     margin-top: 5px;
 }
 
