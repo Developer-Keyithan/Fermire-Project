@@ -36,9 +36,9 @@ function OrderOverview() {
             </div>
 
             <div className="right-section">
-                <p><strong>Sub Total:</strong> Rs. { }</p>
-                <div className="total-price">
-                    <h1>Total Price</h1>
+                <p><strong>Total Price:</strong> Rs. { }</p>
+                <div className="final-price">
+                    <h1>Final Price</h1>
                     <p>= Rs. { }</p>
                 </div>
                 <button className='order-btn'>Place Order</button>
