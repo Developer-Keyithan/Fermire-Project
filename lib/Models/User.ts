@@ -14,7 +14,7 @@ const userSchema = new Schema(
         },
         mobileNumber: { type: Number, required: true, unique: true },
         password: { type: String, required: true },
-        userType: { type: String, required: true },
+        userType: { type: String, required: true, enum: ["consumer", "seller", "delivery-partner", "delivery-person", "admin", "super-admin"] },
         profileImage: { type: String, required: false },
         favourites: {
             favProducts: [{ type: Schema.Types.ObjectId, ref: "Product" }],
