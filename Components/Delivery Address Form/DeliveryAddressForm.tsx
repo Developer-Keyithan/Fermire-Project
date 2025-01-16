@@ -175,7 +175,6 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ handleClose }
                         <div className='flex justify-between mt-2'>
                             <label className='flex items-center gap-2 cursor-pointer' htmlFor="home-address"><input type="radio" name='delivery-place' id='home-address' className='cursor-pointer' />Home Address</label>
                             <label className='flex items-center gap-2 cursor-pointer' htmlFor="work-place-address"><input type="radio" name='delivery-place' id='work-place-address' className='cursor-pointer' />Work Place Address</label>
-                            <label className='flex items-center gap-2 cursor-pointer' htmlFor="institution-address"><input type="radio" name='delivery-place' id='institution-address' className='cursor-pointer' />Institution Address</label>
                             <label className='flex items-center gap-2 cursor-pointer' htmlFor="other-address"><input type="radio" name='delivery-place' id='other-address' className='cursor-pointer' />Other Address</label>
                         </div>
                     </div>
