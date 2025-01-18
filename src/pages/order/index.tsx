@@ -7,17 +7,29 @@ import Coupon from '../../../Components/Coupon/Coupon'
 import ChosenProduct from '../../../Components/Chosen Product/ChosenProduct'
 import DeliveryAddressForm from '../../../Components/Delivery Address Form/DeliveryAddressForm';
 import { useState } from 'react';
+import CardForm from '../../../Components/cardForm'
 
 function OrderPage() {
     const [showDeliveryForm, setShowDeliveryForm] = useState(false);
+    const [showCardForm, setShowCardForm] = useState(false);
 
-const handleAddDeliveryAddressClick = () => {
-    setShowDeliveryForm(true);
-};
+    const handleAddDeliveryAddressClick = () => {
+        setShowDeliveryForm(true);
+    };
 
-const handleCloseDeliveryForm = () => {
-    setShowDeliveryForm(false); 
-};
+    const handleCloseDeliveryForm = () => {
+        setShowDeliveryForm(false);
+    };
+
+
+
+    const handleAddCardClick = () => {
+        setShowCardForm(true);
+    };
+
+    const handleCloseCardForm = () => {
+        setShowCardForm(false);
+    };
 
     return (
         <div className='orderpage-container'>
@@ -25,7 +37,7 @@ const handleCloseDeliveryForm = () => {
                 <div className='left-content'>
                     <div className="add-cards">
                         <AddOne textContent='Add New Delivery Address' onClick={handleAddDeliveryAddressClick} />
-                        <AddOne textContent='Add New Card' onClick={handleAddDeliveryAddressClick} />
+                        <AddOne textContent='Add New Card' onClick={handleAddCardClick} />
                     </div>
 
                     <div className="payment-method">
@@ -55,6 +67,12 @@ const handleCloseDeliveryForm = () => {
             {showDeliveryForm && (
                 <div className="w-full h-full fixed top-0 left-0 flex justify-center items-center px-[30vw] backdrop-blur-lg">
                     <DeliveryAddressForm handleClose={handleCloseDeliveryForm} />
+                </div>
+            )}
+
+            {showCardForm && (
+                <div className="w-full h-full fixed top-0 left-0 flex justify-center items-center px-[30vw] backdrop-blur-lg">
+                    <CardForm handleClose={handleCloseCardForm} />
                 </div>
             )}
         </div>
