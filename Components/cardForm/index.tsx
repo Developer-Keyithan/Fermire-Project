@@ -208,7 +208,6 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose }) => {
                                 <input
                                     type="number"
                                     placeholder="Card Number"
-                                    value={formState.cardNumber}
                                     onChange={(e) => setCardNumber(e.target.value)}
                                     className={`border-[1px] ${errors.cardNumber ? 'border-red-500' : 'border-gray-300'} rounded-sm py-1 px-3 focus:outline-green-900 w-full`}
                                 />
@@ -219,7 +218,6 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose }) => {
                                 <input
                                     type="number"
                                     placeholder="CVV"
-                                    value={formState.cvv}
                                     onChange={(e) => setCVV(e.target.value)}
                                     className={`border-[1px] ${errors.cvv ? 'border-red-500' : 'border-gray-300'} rounded-sm py-1 px-3 focus:outline-green-900 w-full`}
                                 />
@@ -231,7 +229,6 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose }) => {
                                 <input
                                     type="number"
                                     placeholder="DD"
-                                    value={formState.date}
                                     onChange={(e) => setDate(e.target.value)}
                                     className={`border-[1px] ${errors.date ? 'border-red-500' : 'border-gray-300'} rounded-sm py-1 px-3 focus:outline-green-900 w-full`}
                                 />
@@ -239,7 +236,6 @@ const CardForm: React.FC<CardFormProps> = ({ handleClose }) => {
                                 <input
                                     type="number"
                                     placeholder="MM"
-                                    value={formState.month}
                                     onChange={(e) => setMonth(e.target.value)}
                                     className={`border-[1px] ${errors.month ? 'border-red-500' : 'border-gray-300'} rounded-sm py-1 px-3 focus:outline-green-900 w-full`}
                                 />
