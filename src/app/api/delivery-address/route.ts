@@ -18,6 +18,7 @@ export const POST = async (req: NextResponse) => {
         } = body;
 
         console.log(contactNumber)
+        console.log(typeof contactNumber[0]);
 
         if (!town) return NextResponse.json({ error: "Town is required" }, { status: 400 });
         if (!division) return NextResponse.json({ error: "Division is required" }, { status: 400 });
@@ -44,7 +45,7 @@ export const POST = async (req: NextResponse) => {
         return NextResponse.json({
             message: "New delivery address added successfully",
             newDeliveryAddress
-        }, { status: 201 });
+        }, { status: 200 });
 
     } catch (error: any) {
         return NextResponse.json({

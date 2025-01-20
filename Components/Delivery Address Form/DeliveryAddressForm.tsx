@@ -10,7 +10,7 @@ interface FormState {
     town: string;
     division: string;
     district: string;
-    contactNumbers: number[];
+    contactNumbers: string[];
 }
 
 interface DeliveryAddressFormProps {
@@ -39,7 +39,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ handleClose }
         town: '',
         division: '',
         district: '',
-        contactNumbers: [],
+        contactNumbers: [''],
     });
 
     const [errors, setErrors] = useState<Record<string, string>>({});
@@ -52,7 +52,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ handleClose }
     };
 
     const handleContactNumberChange = (index: number, value: string) => {
-        const updatedNumbers: number[] = [...formState.contactNumbers];
+        const updatedNumbers = [...formState.contactNumbers];
         updatedNumbers[index] = value;
         setFormState({ ...formState, contactNumbers: updatedNumbers });
     };
