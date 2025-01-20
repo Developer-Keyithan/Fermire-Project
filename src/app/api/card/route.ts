@@ -74,4 +74,34 @@ export const DELETE = async (req: NextRequest) => {
             error: error.message
         }, { status: 500 })
     }
-}
+};
+
+export const PATCH = async (req: NextRequest) => {
+    try {
+        const body = await req.json();
+        const { bankCardId, bankName, cardNumber, cvv, date, month, cardType } = body;
+
+        if (!bankCardId) return NextResponse.json({ error: "Card id is required" }, { status: 400 });
+
+        await DBconnect();
+        const updatedCard = await BankCard.findByIdAndUpdate(bankCardId, {
+            bankName,
+            cardNumber,
+            cvv,
+            expireDate: { date, month },
+            cardType
+        }, { new: true });
+
+        if (!updatedCard) return NextResponse.json({ error: "Card not found" }, { status: 404 });
+
+        return NextResponse.json({
+            message: "Card updated successfully",
+            updatedCard
+        }, { status: 200 });
+    } catch (error: any) {
+        return NextResponse.json({
+            message: "Error updating card",
+            error: error.message
+        }, { status: 500 })
+    }
+};
