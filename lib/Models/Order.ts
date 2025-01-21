@@ -16,7 +16,7 @@ const orderSchema = new Schema(
         couponDiscount: { type: Number, required: true, default: 0, min: 0 },
         promoCodeDiscount: { type: Number, required: true, default: 0, min: 0 },
         totalPrice: { type: Number, required: true, min: 0 },
-        status: { type: String, required: true }
+        status: { type: String, required: true, enum: ["placed", "shipped", "delivered", "cancelled"] }
     },
     { timestamps: true }
 );
