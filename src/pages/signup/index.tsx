@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
 import './SignUp.css';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { FaGoogle, FaFacebook, FaApple, FaTiktok } from "react-icons/fa";
 import { TiHome } from "react-icons/ti";
 import { HiMiniShoppingBag } from "react-icons/hi2";
 import { RiMoonClearFill } from "react-icons/ri";
-import Toggle from '../../../Components/Toggle/Toggle';
-import axios from 'axios';
-import { useRouter } from 'next/router';
-import { toast } from 'react-toastify';
-import Navbar from '../../../Components/Navbar/Navbar';
 import { BiUser } from 'react-icons/bi';
+
+import Toggle from '../../../Components/Toggle/Toggle';
+import Navbar from '../../../Components/Navbar/Navbar';
 import Footer from '../../../Components/Footer/Footer';
 
 const SignUp = () => {
