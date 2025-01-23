@@ -1,6 +1,10 @@
-import NextAuth from "next-auth";
-import Github from "next-auth/providers/github";
+import jwt from 'jsonwebtoken'
 
-export const { auth, handlers, login, logout } = NextAuth({
-    providers: [Github],
-});
+const JWT_SECRET = process.env.SECRET_KEY;
+console.log(JWT_SECRET)
+
+const generateToken = (user: any): any => {
+  return jwt.sign({ id: user._id, email: user.email }, JWT_SECRET!, { expiresIn: '1h' });
+};
+
+export default generateToken;
