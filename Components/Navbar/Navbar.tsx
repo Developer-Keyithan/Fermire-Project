@@ -5,21 +5,22 @@ import './style.css'
 import { BiSearch, BiUser } from 'react-icons/bi'
 import { IoCartOutline } from 'react-icons/io5'
 import { RiMoonClearFill } from 'react-icons/ri'
+import { LuFileHeart } from "react-icons/lu";
 import React, { MouseEvent } from "react";
 
 const Navbar: React.FC = () => {
     const router = useRouter();
-  
-    const handleAboutClick = (e: MouseEvent<HTMLAnchorElement>) => {
-      e.preventDefault();
-      router.push("/");
 
-      setTimeout(() => {
-        const aboutSection = document.getElementById("about");
-        if (aboutSection) {
-          aboutSection.scrollIntoView({ behavior: "smooth" });
-        }
-      }, 100);
+    const handleAboutClick = (e: MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        router.push("/");
+
+        setTimeout(() => {
+            const aboutSection = document.getElementById("about");
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: "smooth" });
+            }
+        }, 100);
     };
 
     return (
@@ -49,6 +50,12 @@ const Navbar: React.FC = () => {
                         </div>
                     </div>
                 </a>
+                <div className='p-2 rounded-full cursor-pointer hover:bg-green-800 hover:text-white transition ease-in-out duration-300 relative'>
+                    <LuFileHeart className='text-2xl bg-green flex justify-center items-center' />
+                    <div className='flex items-center justify-center px-2 bg-red-600 rounded-full absolute top-0 right-0'>
+                        <p className='text-xs text-white'>9</p>
+                    </div>
+                </div>
                 <div className='p-2 rounded-full cursor-pointer hover:bg-green-800 hover:text-white transition ease-in-out duration-300'><BiUser className='text-2xl bg-green flex justify-center items-center' /></div>
                 <div className='p-2 rounded-full cursor-pointer hover:bg-green-800 hover:text-white transition ease-in-out duration-300'><RiMoonClearFill className='text-2xl bg-green flex justify-center items-center' /></div>
             </div>

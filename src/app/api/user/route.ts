@@ -3,6 +3,14 @@ import DBconnect from '../../../../lib/db';
 import User from '../../../../lib/Models/User';
 import { Types } from 'mongoose';
 import bcrypt from 'bcrypt';
+import JWT from '../../auth'
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.SECRET_KEY;
+
+const generateToken = (user: any): any => {
+    return jwt.sign({ id: user._id, email: user.email, userType: user.userType }, JWT_SECRET!, { expiresIn: '1h' });
+};
 
 export const POST = async (req: Request) => {
     try {
@@ -23,9 +31,22 @@ export const POST = async (req: Request) => {
             );
         }
 
-        await User.create(newUser);
+        const user = await User.create(newUser);
+        const token = generateToken(user);
 
-        return NextResponse.json({ message: "User account successfully created!" }, { status: 200 });
+        const response = NextResponse.json({
+            message: "User account successfully created!",
+            user: { id: user._id, email: user.email, userType: user.userType },
+        },{ status: 200 });
+
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 3600,
+            path: "/",
+        });
+
+        return response;
     } catch (error: any) {
         return NextResponse.json(
             { message: "Sorry! Failed to create user account." },
@@ -37,17 +58,17 @@ export const POST = async (req: Request) => {
 export const PUT = async (req: NextRequest) => {
     try {
         const body = await req.json();
-        const { 
-            userId, 
-            newFirstName, 
-            newLastName, 
-            newEmail, 
-            newMobileNumber, 
-            newPassword, 
-            newUserType, 
-            newProfileName, 
-            newFavProduct, 
-            newFavReview 
+        const {
+            userId,
+            newFirstName,
+            newLastName,
+            newEmail,
+            newMobileNumber,
+            newPassword,
+            newUserType,
+            newProfileName,
+            newFavProduct,
+            newFavReview
         } = body;
 
         if (!userId || !Types.ObjectId.isValid(userId)) {
@@ -80,7 +101,7 @@ export const PUT = async (req: NextRequest) => {
         await DBconnect();
 
         const updatedUser = await User.findByIdAndUpdate(
-            {_id: userId},
+            { _id: userId },
             { $set: data },
             { new: true }
         );

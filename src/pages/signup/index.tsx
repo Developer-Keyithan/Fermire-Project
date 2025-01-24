@@ -100,6 +100,8 @@ const SignUp = () => {
             });
 
             if (response.status === 200) {
+                const token = response.data.token; // Get the token from the response
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 toast.success(response.data.message, {
                     style: {
                         width: '400px',

@@ -2,24 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import User from "../../../../../lib/Models/User";
 import DBconnect from "../../../../../lib/db";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.SECRET_KEY;
+
+const generateToken = (user: any) => {
+  return jwt.sign({ id: user._id, email: user.email, userType: user.userType }, JWT_SECRET!, { expiresIn: '1h' });
+};
 
 export const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
     const { emailOrMobileNumber, password } = body;
 
-    if (!emailOrMobileNumber) {
-      return NextResponse.json(
-        { error: "Please enter your e-mail or mobile number" },
-        { status: 400 }
-      );
-    }
-
-    if (!password) {
-      return NextResponse.json(
-        { error: "Please enter the password" },
-        { status: 400 }
-      );
+    if (!emailOrMobileNumber || !password) {
+      return NextResponse.json({ error: "Email or password is required" }, { status: 400 });
     }
 
     const isMobileNumber = /^\d+$/.test(emailOrMobileNumber);
@@ -28,30 +25,34 @@ export const POST = async (req: NextRequest) => {
       : { email: emailOrMobileNumber };
 
     await DBconnect();
-
     const user = await User.findOne(query);
 
     if (!user) {
-      return NextResponse.json(
-        { error: "User not found. Please sign up" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "User not found. Please sign up." }, { status: 401 });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return NextResponse.json({ error: "Invalid password! Please enter correct password" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid password" }, { status: 401 });
     }
 
-    return NextResponse.json(
-      { message: "Account loged in successfully!", user: { id: user._id, email: user.email } },
-      { status: 200 }
-    );
+    const token = generateToken(user);
+
+    const response = NextResponse.json({
+      message: "Login successful!",
+      user: { id: user._id, email: user.email },
+    }, { status: 200 });
+
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 3600,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error("Error in POST handler:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 };
