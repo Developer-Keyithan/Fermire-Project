@@ -1,20 +1,22 @@
-"use client";
-
-import "./style.css";
+import { useState } from "react";
 
 interface PannelSelectorProps {
   textContent: string;
   onClick: () => void;
-  className?: string;
+  isActive: boolean; 
 }
 
-const PannelSelector: React.FC<PannelSelectorProps> = ({ textContent, onClick, className }) => {
+const PannelSelector: React.FC<PannelSelectorProps> = ({ textContent, onClick, isActive }) => {
   return (
-    <div className="w-full">
+    <div>
       <button
         onClick={onClick}
         type="button"
-        className={`controller cursor-pointer py-2 px-16 text-white transition ease-in-out duration-300 ${className}`}
+        className={`controller cursor-pointer py-2 px-20 text-white transition ease-in-out duration-300 
+          ${isActive 
+            ? "bg-white text-black" 
+            : "bg-primary-color text-white"}` 
+        }
       >
         {textContent}
       </button>
