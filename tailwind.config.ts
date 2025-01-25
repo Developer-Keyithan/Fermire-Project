@@ -9,10 +9,19 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+        primaryColor: '#007546',
+        secondaryColor: '#00D480',
+        inputLabelolor: '#D9D9D9',
+        bgColor: '#ffffff',
+        textColor: '#002718',
+        primaryButtonColor: '#00AD1d',
+        secondaryButtonColor: '#FF8000',
+        primaryButtonHoverColor: '#006B12',
+        secondaryButtonHoverColor: '#834100',
+        cartBg: '#EFEFEF',
+        bgRed: '#DC2626'
     },
   },
-  plugins: [],
+},
+plugins: [],
 } satisfies Config;

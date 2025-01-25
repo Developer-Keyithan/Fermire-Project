@@ -2,6 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import './style.css'
+import { BiSearch, BiUser } from 'react-icons/bi'
+import { IoCartOutline } from 'react-icons/io5'
+import { RiMoonClearFill } from 'react-icons/ri'
+import { LuFileHeart } from "react-icons/lu";
 import React, { MouseEvent } from "react";
 import SearchBar from "./SearchBar";
 import NavBarIcons from "./NavBarIcons";
@@ -52,11 +56,11 @@ const Navbar: React.FC = () => {
                                 </span>
                             </p>
                         </Link>
-                        <div className="hidden xl:flex gap-4 hover:font-semibold">
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='/'>Home</Link>
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='/products'>Shop Now</Link>
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='#about' onClick={handleAboutClick}>About Us</Link>
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='/contactus'>Contact Us</Link>
+                        <div className="hidden xl:flex gap-4 font-semibold">
+                            <Link href='/'>Home</Link>
+                            <Link href='/products'>Shop Now</Link>
+                            <Link href='#about' onClick={handleAboutClick}>About Us</Link>
+                            <Link href='/contactus'>Contact Us</Link>
                         </div>
                     </div>
 
