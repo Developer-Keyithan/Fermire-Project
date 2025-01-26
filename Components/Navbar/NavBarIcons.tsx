@@ -9,9 +9,16 @@ import { RiMoonClearFill } from "react-icons/ri";
 import CartModel from "../CartModel/CartModel";
 import WishListModel from "../WishListModel/WishListModel";
 import Link from "next/link";
+import Profile from "../Profile/Profile";
 
-const NavBarIcons = () => {
+interface NavBarIconsProps {
+    userData: any;
+}
+
+const NavBarIcons: React.FC<NavBarIconsProps> = ({ userData }) => {
+    
     const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const [user, setUser] = useState(userData);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isWishListOpen, setIsWishListOpen] = useState(false);
 
@@ -20,9 +27,6 @@ const NavBarIcons = () => {
     const isLoggedIn = false;
 
     const handleProfile = () => {
-        if (!isLoggedIn) {
-            router.push('/login');
-        }
         setIsProfileOpen((prev) => !prev)
     }
 
@@ -34,10 +38,7 @@ const NavBarIcons = () => {
                     onClick={handleProfile}
                 />
             </div>
-            {isProfileOpen && <div className="absolute p-4 rounded-md top-12 left-0 text-md shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white z-50">
-                <Link href='/'>Profile</Link>
-                <div className="mt-2 cursor-pointer">LogOut</div>
-            </div>}
+            {isProfileOpen && (<Profile />)}
 
             <div
                 className=' relative text-2xl bg-green flex justify-center items-center cursor-pointer'

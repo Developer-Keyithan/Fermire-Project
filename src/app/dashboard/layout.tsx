@@ -142,7 +142,7 @@ export default function DashboardLayout({
     return (
         <main>
             <div className="sticky top-0 z-50">
-                <Navbar />
+                <Navbar userData={userData} />
                 <hr />
             </div>
             {children}

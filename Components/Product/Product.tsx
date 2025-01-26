@@ -11,16 +11,15 @@ import { RxCross2 } from "react-icons/rx";
 interface product {
   id: string;
   image: string | StaticImageData;
-  relatedImages: (string | StaticImageData)[];
   name: string;
-  description: string;
-  rating: string;
-  district: string;
-  freshness: string;
-  agricationMethod: string;
+  productName: string;
+  price: {
+    newPrice: string;
+    oldPrice: string;
+  };
+  productImages: string[] | StaticImageData[];
+  rating: number;
   deliveryType: string;
-  newPrice: string;
-  oldPrice: string;
 }
 
 interface FilterProps {

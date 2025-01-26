@@ -17,7 +17,7 @@ interface ProductData {
     newPrice: string;
     oldPrice: string;
   };
-  rating: string;
+  rating: number;
   productImages: string[] | StaticImageData[];
 }
 
@@ -27,7 +27,6 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ data }) => {
   const router = useRouter();
-  console.log(data);
   const handleAddToCart = () => {
     // Code to add item to cart
   }
