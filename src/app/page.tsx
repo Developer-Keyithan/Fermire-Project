@@ -1,17 +1,19 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './CSS/LandingPage.css';
 import Product from '../../Components/Product/Product';
 import About from '../../Components/About/About';
 import Navbar from '../../Components/Navbar/Navbar';
 import Footer from '../../Components/Footer/Footer';
 import { FaArrowRightLong } from "react-icons/fa6";
-import Toggle from '../../Components/Toggle/Toggle';
 import Hero from '../../Components/Hero/Hero';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
-const LandingPage = () => {
+const LandingPage: React.FC = () => {
+
+  const [user, setUser] = useState(null); // For storing user data
+  const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState(20);  // Show 20 products initially
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -30,6 +32,23 @@ const LandingPage = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const { data } = await axios.get('/api/cookie');
+        const response = await axios.post('/api/user/get-user', { userId: data.user.id });
+        setUser(response.data.user);
+        setError(null);
+      } catch (error) {
+        const axiosError = error as AxiosError;
+        setError(axiosError.message || 'Failed to fetch user data');
+        setUser(null);
+      }
+    };
+  
+    fetchUser();
+  }, []);
+  
   const loadMoreProducts = () => {
     setVisibleProducts(visibleProducts + 20);  // Load 20 more products when clicking "Show More"
   };
@@ -40,7 +59,7 @@ const LandingPage = () => {
 
   return (
     <div className={isDarkMode ? "dark" : "light"}>
-      <Navbar />
+      <Navbar userData={user} />
       <hr className='sticky top-16' />
       <div>
         <div className="Hero-container">

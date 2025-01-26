@@ -1,7 +1,11 @@
 import './RatingCart.css'
 import { IoStar, IoStarHalf, IoStarOutline } from "react-icons/io5";
 
-const RatingCart: React.FC = () => {
+interface RatingCartProps {
+  rating: number;
+}
+
+const RatingCart: React.FC<RatingCartProps> = ({ rating }) => {
 
   return (
     <div className="rating">

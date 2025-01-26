@@ -8,7 +8,11 @@ import NavBarIcons from "./NavBarIcons";
 import Link from "next/link";
 import Menu from "./Menu";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+    userData: any;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ userData }) => {
     const router = useRouter();
 
     const handleAboutClick = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -64,7 +68,7 @@ const Navbar: React.FC = () => {
                     <div className="">
                         <div className='flex flex-row gap-2'>
                             <SearchBar />
-                            <NavBarIcons />
+                            <NavBarIcons userData={userData} />
                         </div>
                     </div>
                 </div>
