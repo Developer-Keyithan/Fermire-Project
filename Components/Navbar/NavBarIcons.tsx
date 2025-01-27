@@ -24,7 +24,6 @@ const NavBarIcons: React.FC<NavBarIconsProps> = ({ userData }) => {
     const handleProfile = () => setIsProfileOpen((prev) => !prev);
     const toggleDarkMode = () => document.body.classList.toggle('dark-mode');
     const nameLogo = `${userData?.firstName?.[0]}${userData?.lastName?.[0]}`;
-    console.log(nameLogo);
 
     return (
         <div className="flex gap-4 relative">

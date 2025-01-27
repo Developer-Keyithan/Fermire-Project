@@ -1,56 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios, { AxiosError } from 'axios';
-import { BiCamera, BiUser } from 'react-icons/bi';
-import { MdEdit } from 'react-icons/md';
+import { BiCamera } from 'react-icons/bi';
+import { MdEdit, MdSave } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
-import './style.css';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
+
+interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  id: string;
+  mobileNumber: string[];
+  profileImage: string;
+}
 
 const Profile: React.FC = () => {
-  interface User {
-    firstName: string;
-    lastName: string;
-    email: string;
-    mobileNumber: string[];
-  }
-
   const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [close, setClose] = useState(false);
-  const [isLogoutVisible, setIsLogoutVisible] = useState(true)
+  const [isLogoutVisible, setIsLogoutVisible] = useState(true);
   const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+  const [isImage, setIsImage] = useState(true);
+  const [isEmailEdit, setIsEmailEdit] = useState(false);
+  const [isMobileNumberEdit, setIsMobileNumberEdit] = useState(false);
+
+  // New states to track changes in email and mobile number
+  const [editedEmail, setEditedEmail] = useState('');
+  const [editedMobileNumber, setEditedMobileNumber] = useState('');
 
   const router = useRouter();
 
   const handleLogin = () => router.push('/login');
   const handleSignup = () => router.push('/signup');
-  const handleLogout = () => {
-    setIsVisibleConfirm(true);
-  };
+  const handleLogout = () => setIsVisibleConfirm(true);
 
   const handleYes = async () => {
     try {
       const response = await axios.post('/api/user/logout');
-
       if (response.status === 200) {
-        toast.success('Logout Sccessfull')
+        toast.success('Logout Successful');
+        setIsLogoutVisible(false);
+        setClose(true);
       } else {
-        toast.error('Oops! Logout Failed.')
+        toast.error('Oops! Logout Failed.');
       }
-
-      setIsVisibleConfirm(false)
-      setIsLogoutVisible(false)
-      setClose(true)
+      setIsVisibleConfirm(false);
     } catch (error) {
       console.error('Logout failed', error);
     }
   };
 
-  const handleNo = () => {
-    setIsVisibleConfirm(false);
-  };
-
+  const handleNo = () => setIsVisibleConfirm(false);
   const handleClose = () => setClose(true);
 
   useEffect(() => {
@@ -59,8 +61,11 @@ const Profile: React.FC = () => {
       try {
         const { data } = await axios.get('/api/cookie');
         if (isMounted) {
-          const response = await axios.post('/api/user/get-user', { userId: data.user.id });
-          setUser(response.data.user);
+          const response = await axios.post('/api/user/get-user', { userId: data.user.id, newEmail: editedEmail });
+          const fetchedUser = response.data.user;
+          setUser(fetchedUser);
+          setEditedEmail(fetchedUser.email);
+          setEditedMobileNumber(fetchedUser.mobileNumber.join(', '));
           setError(null);
         }
       } catch (error) {
@@ -71,13 +76,50 @@ const Profile: React.FC = () => {
         }
       }
     };
-
     fetchUser();
-
     return () => {
       isMounted = false;
     };
   }, []);
+
+  const handleEmailEdit = () => setIsEmailEdit(true);
+  const handleMobileNumberEdit = () => setIsMobileNumberEdit(true);
+
+  const handleSaveEditedEmail = async () => {
+    try {
+      if (!user) {
+        toast.error('User not found.');
+        return;
+      }
+      const response = await axios.patch('/api/user', { userId: user.id, newEmail: editedEmail });
+      if (response.status === 200 && user) {
+        toast.success('E-mail updated.');
+        setUser({ ...user, email: editedEmail });
+      } else {
+        toast.error('Failed to update.');
+      }
+    } catch (error) {
+      toast.error((error as AxiosError).message);
+    } finally {
+      setIsEmailEdit(false);
+    }
+  };
+
+  const handleSaveEditedMobileNumber = async () => {
+    try {
+      const response = await axios.patch('/api/user', { newMobileNumber: editedMobileNumber.split(', ') });
+      if (response.status === 200 && user) {
+        setUser({ ...user, mobileNumber: editedMobileNumber.split(', ') });
+        toast.success('Mobile number updated.');
+      } else {
+        toast.error('Failed to update.');
+      }
+    } catch (error) {
+      toast.error((error as AxiosError).message);
+    } finally {
+      setIsMobileNumberEdit(false);
+    }
+  };
 
   if (close) return null;
 
@@ -104,19 +146,25 @@ const Profile: React.FC = () => {
     );
   }
 
+  const nameLogo = `${user.firstName[0]}${user.lastName[0]}`;
+  const profileImage = user.profileImage;
   const name = `${user.firstName} ${user.lastName}`;
-  const email = user.email;
-  const phone = user.mobileNumber.join(', ');
 
   return (
     <div className="w-max absolute rounded-md shadow-[0_3px_10px_rgb(0,0,0,0.2)] bg-white top-12 right-0 flex flex-col gap-6 z-20 overflow-hidden">
-      <div className="max-fit mx-auto bg-white rounded-m p-4 relative">
+      <div className="max-fit mx-auto bg-white rounded-md p-4 relative">
         <div className="flex flex-col items-center gap-5 mt-7">
           <div className="relative">
-            <div className="text-[100px] text-center border-[1px] border-black rounded-full p-2 w-fit cursor-pointer">
-              <BiUser />
-            </div>
-            <button className="absolute bottom-1 right-1 bg-green-800 text-white rounded-full p-2 text-[20px] hover:bg-green-600 transition ease-in-out duration-300 cursor-pointer">
+            {isImage ? (
+              <div className="flex items-center justify-center border-[1px] bg-primaryColor rounded-full p-8 w-fit cursor-pointer">
+                <p className="font-semibold mt-1 text-[60px] text-white">{nameLogo}</p>
+              </div>
+            ) : (
+              <div className="text-center border-[1px] border-black rounded-full p-2 w-fit cursor-pointer">
+                <Image src={profileImage} alt="" className="text-[100px]" />
+              </div>
+            )}
+            <button className="absolute bottom-1 right-1 bg-white text-primaryColor ring-1 ring-primaryColor rounded-full p-2 text-[20px] hover:bg-primaryColor hover:ring-white hover:text-white transition ease-in-out duration-300 cursor-pointer">
               <BiCamera />
             </button>
           </div>
@@ -130,23 +178,47 @@ const Profile: React.FC = () => {
         </div>
 
         <div className="flex flex-col gap-5 mt-5 relative">
-          <div className="flex justify-between items-center gap-10g w-full border-[1px] py-[5px] px-[10px] rounded-sm">
+          <div className="flex justify-between items-center gap-5 w-full border-[1px] py-[5px] px-[10px] rounded-sm">
             <div className="flex gap-1">
               <p className="font-semibold">E-mail:</p>
-              <p>{email}</p>
+              {!isEmailEdit ? (
+                <p>{editedEmail}</p>
+              ) : (
+                <input
+                  type="email"
+                  value={editedEmail}
+                  onChange={(e) => setEditedEmail(e.target.value)}
+                />
+              )}
             </div>
             <div className="hover:bg-green-800 p-1 text-lg cursor-pointer rounded-sm hover:text-white -mr-[5px] transition ease-in-out duration-300">
-              <MdEdit />
+              {!isEmailEdit ? (
+                <MdEdit onClick={handleEmailEdit} />
+              ) : (
+                <MdSave onClick={handleSaveEditedEmail} />
+              )}
             </div>
           </div>
 
-          <div className="flex justify-between items-center gap-10g w-full border-[1px] py-[5px] px-[10px] rounded-sm">
+          <div className="flex justify-between items-center gap-5 w-full border-[1px] py-[5px] px-[10px] rounded-sm">
             <div className="flex gap-1">
               <p className="font-semibold">Mobile Number:</p>
-              <p>+94 {phone}</p>
+              {!isMobileNumberEdit ? (
+                <p>+94 {editedMobileNumber}</p>
+              ) : (
+                <input
+                  type="text"
+                  value={editedMobileNumber}
+                  onChange={(e) => setEditedMobileNumber(e.target.value)}
+                />
+              )}
             </div>
             <div className="hover:bg-green-800 p-1 text-lg cursor-pointer rounded-sm hover:text-white -mr-[5px] transition ease-in-out duration-300">
-              <MdEdit />
+              {!isMobileNumberEdit ? (
+                <MdEdit onClick={handleMobileNumberEdit} />
+              ) : (
+                <MdSave onClick={handleSaveEditedMobileNumber} />
+              )}
             </div>
           </div>
 
@@ -159,11 +231,21 @@ const Profile: React.FC = () => {
             </button>
           )}
           {isVisibleConfirm && (
-            <div className='py-4 absolute bottom-0 right-0 bg-white w-full'>
-              <p>Are you sure?</p>
-              <div className='flex justify-between gap-4 mt-4'>
-                <button className='py-1 w-full bg-red-700 text-white hover:bg-red-800 transition ease-in-out duration-500 rounded-sm' onClick={handleYes}>Yes</button>
-                <button className='py-1 w-full bg-primaryButtonHoverColor text-white hover:bg-primaryColor transition ease-in-out duration-500 rounded-sm' onClick={handleNo}>No</button>
+            <div className="bg-gray-100 p-4 border rounded-sm">
+              <p>Are you sure you want to log out?</p>
+              <div className="flex gap-2 mt-2">
+                <button
+                  className="bg-red-800 text-white rounded-sm px-2 py-1"
+                  onClick={handleYes}
+                >
+                  Yes
+                </button>
+                <button
+                  className="bg-gray-300 text-black rounded-sm px-2 py-1"
+                  onClick={handleNo}
+                >
+                  No
+                </button>
               </div>
             </div>
           )}

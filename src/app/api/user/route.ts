@@ -129,7 +129,7 @@ export const PUT = async (req: NextRequest) => {
             return NextResponse.json({ error: 'User not found' }, { status: 404 });
         }
 
-        return NextResponse.json({ message: 'Update successful', user: updatedUser });
+        return NextResponse.json({ message: 'Update successful', user: updatedUser }, { status: 200 });
     } catch (error: any) {
         console.error('Error updating user:', error);
         return NextResponse.json({ error: 'Server error', details: error.message }, { status: 500 });
