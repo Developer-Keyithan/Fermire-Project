@@ -12,10 +12,10 @@ const PannelSelector: React.FC<PannelSelectorProps> = ({ textContent, onClick, i
       <button
         onClick={onClick}
         type="button"
-        className={`controller cursor-pointer py-2 px-20 text-white transition ease-in-out duration-300 
+        className={`controller cursor-pointer py-2 w-full transition ease-in-out duration-300 
           ${isActive 
-            ? "bg-white text-black" 
-            : "bg-primary-color text-white"}` 
+            ? "bg-secondaryColor text-primaryButtonHoverColor" 
+            : "bg-primaryColor text-white"}` 
         }
       >
         {textContent}

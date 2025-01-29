@@ -95,10 +95,10 @@ export default function DashboardLayout({
         (async () => {
             const { id, userType, error } = await getUser();
 
-            // if (error || !id || !userType) {
-            //     router.push('/');
-            //     return;
-            // }
+            if (error || !id || !userType) {
+                router.push('/login');
+                return;
+            }
 
             if (userType === 'seller') {
                 // Fetching all seller-specific data in parallel

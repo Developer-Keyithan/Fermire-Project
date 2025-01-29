@@ -10,8 +10,10 @@ interface UserDataType {
   updatedAt: string;
 }
 
+
+
 const UserDashboard: React.FC<{ 
-  User: UserDataType, 
+  User: UserDataType,
   activePanel: string;
   onPanelClick: (panel: string) => void;
   panels: string[]; 
@@ -52,13 +54,13 @@ const UserDashboard: React.FC<{
             </p>
             <p className="mt-1">
               <strong>Address: </strong>
-              As an admin, you don't have a unique address
+              As an admin, you don't have an unique address
             </p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between mt-10">
+      <div className="flex justify-between mt-10 gap-1">
         {panels.map((panel) => (
           <PannelSelector
             key={panel}
@@ -67,15 +69,6 @@ const UserDashboard: React.FC<{
             isActive={activePanel === panel}
           />
         ))}
-      </div>
-
-      <div className="mt-10 border p-5">
-        {activePanel === "Delivered" && <p>Delivered Orders Data...</p>}
-        {activePanel === "Tracking" && <p>Tracking Information...</p>}
-        {activePanel === "Reviews" && <p>User Reviews...</p>}
-        {activePanel === "Messages" && <p>Messages Section...</p>}
-        {activePanel === "Cancelled" && <p>Cancelled Orders Data...</p>}
-        {activePanel === "Saved Data" && <p>Saved Data Information...</p>}
       </div>
 
       <div className="absolute -top-8 right-0 flex gap-5">
