@@ -192,7 +192,7 @@ const Profile: React.FC = () => {
                 <p>{email}</p>
               ) : (
                 <input
-                  className='ring-1 ring-primaryColor w-60'
+                  className='ring-1 ring-primaryColor w-60 rounded-sm focus:ring-2 transition ease-in-out duration-300 outline-none'
                   type="email"
                   placeholder={editedEmail}
                   onChange={(e) => setEditedEmail(e.target.value)}
@@ -215,7 +215,7 @@ const Profile: React.FC = () => {
                 <p>+94 {phone}</p>
               ) : (
                 <input
-                  className='ring-1 ring-primaryColor w-60'
+                  className='ring-1 ring-primaryColor w-60 rounded-sm focus:ring-2 transition ease-in-out duration-300 outline-none'
                   type="text"
                   placeholder={editedMobileNumber}
                   onChange={(e) => setEditedMobileNumber(e.target.value)}
