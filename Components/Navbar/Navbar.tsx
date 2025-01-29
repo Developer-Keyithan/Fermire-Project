@@ -51,12 +51,7 @@ const Navbar: React.FC = () => {
                 {/* MOBILE */}
                 <div className="h-full flex items-center justify-between xl:hidden">
                     <Link href='/'>
-                        <p className='text-green-600 text-4xl font-semibold'>
-                            F
-                            <span className='text-green-500'>
-                                shop
-                            </span>
-                        </p>
+                        <p className='text-primaryColor text-4xl font-semibold'>Fermire</p>
                     </Link>
                     <Menu />
                 </div>
@@ -66,12 +61,7 @@ const Navbar: React.FC = () => {
                     {/* LEFT */}
                     <div className="flex items-center gap-12">
                         <Link href='/'>
-                            <p className='text-green-600 text-4xl font-semibold'>
-                                F
-                                <span className='text-green-500'>
-                                    shop
-                                </span>
-                            </p>
+                            <p className='text-primaryColor text-4xl font-semibold'>Fermire</p>
                         </Link>
                         <div className="hidden xl:flex gap-4 hover:font-semibold">
                             <Link className="hover:font-semibold transition ease-in-out duration-300" href='/'>Home</Link>

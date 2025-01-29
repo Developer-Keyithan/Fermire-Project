@@ -1,5 +1,3 @@
-'use client'
-
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { BiUser } from "react-icons/bi";
@@ -19,7 +17,12 @@ const NavBarIcons: React.FC<NavBarIconsProps> = ({ userData }) => {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isWishListOpen, setIsWishListOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+    useEffect(() => {
+        // Update isLoggedIn state based on userData
+        setIsLoggedIn(!!userData); // true if userData exists, false otherwise
+    }, [userData]); // Runs when userData changes
 
     const handleProfile = () => setIsProfileOpen((prev) => !prev);
     const toggleDarkMode = () => document.body.classList.toggle('dark-mode');
@@ -30,8 +33,6 @@ const NavBarIcons: React.FC<NavBarIconsProps> = ({ userData }) => {
             {/* Profile */}
             <div className="text-2xl flex justify-center items-center cursor-pointer">
                 {isLoggedIn ? (
-                    <BiUser onClick={handleProfile} />
-                ) : (
                     userData?.profileImage ? (
                         <img
                         src={userData.profileImage}
@@ -42,6 +43,8 @@ const NavBarIcons: React.FC<NavBarIconsProps> = ({ userData }) => {
                     ) : (
                         <h3 className="flex items-center justify-center font-semibold h-9 w-9 text-[16px] bg-primaryColor text-white rounded-full" onClick={handleProfile}>{nameLogo}</h3>
                     )
+                ) : (
+                    <BiUser onClick={handleProfile} />
                 )}
             </div>
             {isProfileOpen && <Profile />}
@@ -71,6 +74,5 @@ const NavBarIcons: React.FC<NavBarIconsProps> = ({ userData }) => {
         </div>
     );
 };
-
 
 export default NavBarIcons;
