@@ -1,9 +1,16 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, JSX } from "react";
 import UserDashboard from "../../../../Components/User Dashboard Controller/UserDashboardController";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Delivered from "../../../../Components/Delivered/Delivered";
+import Deliveries from "../../../../Components/Delivered/Delivered";
+import Users from "../../../../Components/Admins/Users";
+import Products from "../../../../Components/Admins/Products";
+import Orders from "../../../../Components/Admins/Orders";
+import Payments from "../../../../Components/Admins/Payments";
+import Offers from "../../../../Components/Admins/Offers";
 
 type UserDataType = {
   id: string;
@@ -19,6 +26,12 @@ type UserDataType = {
 const adminDashboard = () => {
   const [UserData, setUserData] = useState<UserDataType | null>(null);
   const [activePanel, setActivePanel] = useState<string>("Delivered");
+
+  // const panelComponents: { [key: string]: JSX.Element } = {
+  //   Delivered: <Delivered />,
+  //   Deliveries: <Deliveries />,
+  // };
+
 
   const router = useRouter();
 
@@ -42,7 +55,16 @@ const adminDashboard = () => {
     findUser()
   }, [])
 
-  const panels = ["Delivered", "Tracking", "Reviews", "Messages", "Cancelled", "Saved Data"];
+  const panelComponents: { [key: string]: JSX.Element } = {
+    Users: <Users />,
+    Products: <Products />,
+    Orders: <Orders />,
+    Payments: <Payments />,
+    Deliveries: <Deliveries />,
+    Offers: <Offers />
+  };
+
+  const panels = ["Users", "Products", "Orders", "Payments", "Deliveries", "Offers"];
 
   const handlePanelClick = (panel: string) => {
     setActivePanel(panel);
@@ -51,6 +73,7 @@ const adminDashboard = () => {
   return (
     <div className="mx-60">
       {UserData && <UserDashboard User={UserData} activePanel={activePanel} onPanelClick={handlePanelClick} panels={panels} />}
+      {panelComponents[activePanel]}
     </div>
   )
 }

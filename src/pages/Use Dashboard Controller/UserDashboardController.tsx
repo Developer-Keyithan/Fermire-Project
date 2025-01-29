@@ -1,45 +1,27 @@
-"use client";
-
-import { useState } from "react";
 import { BiCamera, BiUser } from "react-icons/bi";
 import "./style.css";
-import PannelSelector from "../../../Components/Pannel Selector/PannelSelector";
+import PannelSelector from "../../Components/Pannel Selector/PannelSelector";
 
 interface UserDataType {
-  number: number;
+  mobileNumber: number[];
+  firstName: string;
+  lastName: string;
   email: string;
-  name: string;
   updatedAt: string;
 }
 
-interface AddressDataType {
-  no: string;
-  street: string;
-  town: string;
-  division: string;
-  district: string;
-}
 
-const UserDashboard: React.FC<{
-  User: UserDataType;
-  Address: AddressDataType;
-}> = ({ User, Address }) => {
-  const [activePanel, setActivePanel] = useState<string>("");
 
-  const name = User?.name || "Guest";
+const UserDashboard: React.FC<{ 
+  User: UserDataType,
+  activePanel: string;
+  onPanelClick: (panel: string) => void;
+  panels: string[]; 
+}> = ({ User, activePanel, onPanelClick, panels }) => {
+  const name = `${User.firstName} ${User.lastName}`;
   const email = User?.email || "N/A";
-  const number = User?.number || "N/A";
-  const updatedAt = User?.updatedAt || "2014 Dec 21";
-  const address = [
-    Address?.no || "",
-    Address?.street || "",
-    Address?.town || "",
-    Address?.division || "",
-  ]
-    .filter(Boolean)
-    .join(", ");
-
-  const panels = ["Delivered", "Tracking", "Reviews", "Messages", "Cancelled", "Saved Data"];
+  const number = User?.mobileNumber || "N/A";
+  const updatedAt = User?.updatedAt || "N/A";
 
   return (
     <div className="w-full border-[1px] mt-10 pt-10 rounded-sm relative">
@@ -72,33 +54,23 @@ const UserDashboard: React.FC<{
             </p>
             <p className="mt-1">
               <strong>Address: </strong>
-              {address || "No Address Available"}
+              As an admin, you don't have a unique address
             </p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between mt-10">
+      <div className="flex justify-between mt-10 gap-1">
         {panels.map((panel) => (
           <PannelSelector
             key={panel}
             textContent={panel}
-            onClick={() => setActivePanel(panel)}
-            className={activePanel === panel ? "bg-gray-500 text-white" : "bg-gray-300"}
+            onClick={() => onPanelClick(panel)}
+            isActive={activePanel === panel}
           />
         ))}
       </div>
 
-      <div className="mt-5 p-5 border-[1px] rounded-sm">
-        {activePanel ? (
-          <div>
-            <h2 className="text-2xl font-bold">{activePanel} Panel</h2>
-            <p className="mt-3">This is the content for the {activePanel} panel.</p>
-          </div>
-        ) : (
-          <p className="text-gray-500">Please select a panel to view its content.</p>
-        )}
-      </div>
       <div className="absolute -top-8 right-0 flex gap-5">
         <p className="font-semibold cursor-pointer text-orange-600 hover:text-orange-800 transition ease-in-out duration-300">Log out from this device</p>
         <p className="font-semibold cursor-pointer text-red-600 hover:text-red-800 transition ease-in-out duration-300">Delete my account</p>
