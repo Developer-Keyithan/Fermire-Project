@@ -170,11 +170,6 @@ function CartPage() {
 
     const handleCheckout = () => {
 
-        if (!isLoggedIn) {
-            router.push('/login')
-            return
-        }
-
         const selectedItemsData = [...selectedItems].map((selectedItemId) => {
             const selectedItem = cartItems.find(item => item._id === selectedItemId);
             return selectedItem ? {
@@ -183,11 +178,21 @@ function CartPage() {
                 finalQuantity: selectedItem.quantity.value,
                 unit: selectedItem.quantity.unit,
                 pricePerKg: selectedItem.price.newPrice,
+                agricationMethod: selectedItem.agricationMethod
             } : null;
         }).filter(item => item !== null);
 
         localStorage.setItem('checkoutItems', JSON.stringify(selectedItemsData));
-        console.log('Checkout Data Stored:', selectedItemsData);
+
+        if (!isLoggedIn) {
+            router.push('/login')
+            return
+        }
+
+        if (isLoggedIn) {
+            router.push('/order')
+            return
+        }
     };
 
     return (

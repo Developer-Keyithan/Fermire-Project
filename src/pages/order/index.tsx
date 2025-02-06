@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { MdClose } from 'react-icons/md';
-import AddressCart from '../../../Components/Address Cart/AddressCart';
-import CardsCart from '../../../Components/Cards Cart/CardsCart';
-import AddOne from '../../../Components/Add One/AddOne';
-import OrderOverview from '../../../Components/OrderOverview/OrderOverview';
-import Coupon from '../../../Components/Coupon/Coupon';
-import DeliveryAddressForm from '../../../Components/Delivery Address Form/DeliveryAddressForm';
-import CardForm from '../../../Components/cardForm';
 import Image from 'next/image';
 import Navbar from '../../../Components/Navbar/Navbar';
 import Footer from '../../../Components/Footer/Footer';
+import AddOne from '../../../Components/Add One/AddOne';
+import AddressCart from '../../../Components/Address Cart/AddressCart';
+import CardsCart from '../../../Components/Cards Cart/CardsCart';
+import OrderOverview from '../../../Components/OrderOverview/OrderOverview';
+import Coupon from '../../../Components/Coupon/Coupon';
+import DeliveryAddressForm from '../../../Components/Delivery Address Form/DeliveryAddressForm';
+import CardForm from '../../../Components/cardForm/index';
+import { RiUnpinFill } from 'react-icons/ri';
 
 interface Product {
-    price: {
-        newPrice: number;
-    };
+    unit: string;
+    finalQuantity: number;
+    price: { newPrice: number };
+    name: string;
+    pricePerKg: number;
     agricationMethod: string;
     productName: string;
     productDescription: string;
@@ -26,23 +28,25 @@ interface Product {
 function OrderPage() {
     const [showDeliveryForm, setShowDeliveryForm] = useState(false);
     const [showCardForm, setShowCardForm] = useState(false);
-    const [product, setProduct] = useState<Product | null>(null);
+    const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [quantity, setQuantity] = useState(100);
-    const [unit, setUnit] = useState<'kg' | 'gram'>('kg');
+    const [unitSelection, setUnitSelection] = useState<{ [key: number]: string }>({});
 
     const router = useRouter();
-    const id = router.query;
-
-    const imageUrl = 'https://cdn.pixabay.com/photo/2016/08/01/17/08/tomatoes-1561565_1280.jpg'
+    const { id } = router.query;
 
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                if (id?.id) {
-                    const response = await axios.post('/api/product/get-product', { productId: id.id });
-                    setProduct(response.data.product);
+                if (id) {
+                    const response = await axios.post('/api/product/get-product', { productId: id });
+                    setProducts(response.data.product);
+                } else {
+                    const storedData = localStorage.getItem("checkoutItems");
+                    if (storedData) {
+                        setProducts(JSON.parse(storedData));
+                    }
                 }
             } catch (err) {
                 setError('Failed to fetch product details.');
@@ -54,20 +58,32 @@ function OrderPage() {
         fetchProduct();
     }, [id]);
 
-    const handleAddDeliveryAddressClick = () => setShowDeliveryForm(true);
-    const handleCloseDeliveryForm = () => setShowDeliveryForm(false);
-
-    const handleAddCardClick = () => setShowCardForm(true);
-    const handleCloseCardForm = () => setShowCardForm(false);
-
-    const handleQuantityChange = (value: number) => {
-        if (quantity + value >= 0) {
-            setQuantity(quantity + value);
-        }
+    const handleQuantityChange = (index: number, change: number) => {
+        setProducts((prevProducts) =>
+            prevProducts.map((product, i) =>
+                i === index ? { ...product, finalQuantity: Math.max(1, product.finalQuantity + change) } : product
+            )
+        );
     };
 
-    const handleUnitChange = (selectedUnit: 'kg' | 'gram') => {
-        setUnit(selectedUnit);
+    const handleRemoveProduct = (index: number) => {
+        setProducts((prevProducts) => prevProducts.filter((_, i) => i !== index));
+    };
+
+    const handleUnitChange = (index: number, unit: string) => {
+        setProducts((prevProducts) =>
+            prevProducts.map((product, i) =>
+                i === index ? { ...product, unit } : product
+            )
+        );
+    };
+
+    const calculateSubtotal = (product: Product) => {
+        const price = product.price?.newPrice || product.pricePerKg;
+        const quantity = product.finalQuantity;
+        const unit = product.unit; // Get updated unit directly from product
+
+        return unit === "kg" ? price * quantity : (price / 1000) * quantity; // If grams, divide by 1000
     };
 
     if (loading) return <div>Loading...</div>;
@@ -79,103 +95,89 @@ function OrderPage() {
                 <Navbar />
                 <hr />
             </div>
+
             <div className="mx-60 mb-5 rounded-b-[20px] overflow-hidden">
-                {/* Top Container */}
                 <div className="flex flex-col md:flex-row justify-between gap-5 mt-5 px-[1px]">
-                    {/* Left Content */}
                     <div className="flex flex-col gap-5 w-full md:w-[56.9%]">
-                        {/* Add Cards Section */}
                         <div className="flex gap-5">
-                            <AddOne
-                                textContent="Add New Delivery Address"
-                                onClick={handleAddDeliveryAddressClick}
-                            />
-                            <AddOne
-                                textContent="Add New Card"
-                                onClick={handleAddCardClick}
-                            />
+                            <AddOne textContent="Add New Delivery Address" onClick={() => setShowDeliveryForm(true)} />
+                            <AddOne textContent="Add New Card" onClick={() => setShowCardForm(true)} />
                         </div>
 
-                        {/* Payment Method Section */}
                         <div className="w-full mt-5">
                             <h2 className="text-xl font-semibold">Payment Method</h2>
                             <div className="flex justify-around gap-5 mt-5">
-                                <button className="button-primary w-full h-10 text-base">
-                                    Cash on Delivery
-                                </button>
-                                <button className="button-primary w-full h-10 text-base">
-                                    Card Payment
-                                </button>
+                                <button className="button-primary w-full h-10 text-base">Cash on Delivery</button>
+                                <button className="button-primary w-full h-10 text-base">Card Payment</button>
                             </div>
                         </div>
 
-                        {/* Chosen Products Section */}
-                        <div className="ring-1 ring-gray-500 p-4 rounded-md">
-                            {product && (
-                                <div className="w-full h-max flex gap-4 overflow-hidden">
-                                    <div className='h-full w-1/4 overflow-hidden'>
-                                        {product.productImages && product.productImages.length > 0 && (
-                                            <Image
-                                                // src={product.productImages[0].imageUrl}
-                                                src={imageUrl}
-                                                alt={product.productName}
-                                                width={200}
-                                                height={200}
-                                                // layout="fill"
-                                                objectFit="cover"
-                                                className="h-full w-full object-cover"
-                                            />
-                                        )}
-                                    </div>
-                                    <div className='w-3/4'>
-                                        <div>
-                                            <h1 className='font-semibold text-2xl'>{product.productName}</h1>
-                                            <p className='text-lg'>{product.productDescription}</p>
-                                        </div>
-                                        <div className="flex justify-between">
-                                            <p><strong className='font-semibold'>Agrication Method:</strong> {product.agricationMethod}</p>
-                                            <p><strong className='font-semibold'>Price Per kg:</strong> {product.price.newPrice}</p>
-                                        </div>
-                                        <div className='flex gap-4'>
-                                            <div>
-                                                <button onClick={() => handleQuantityChange(-1)}>-</button>
-                                                <input
-                                                    type="number"
-                                                    value={quantity}
-                                                    onChange={(e) => setQuantity(Number(e.target.value))}
-                                                    className='text-center'
+                        <div className="flex flex-col gap-4 ring-1 ring-gray-500 p-4 rounded-md">
+                            {products.length > 0 ? (
+                                products.map((product, index) => (
+                                    <div key={index} className="ring-1 ring-gray-500 p-4 rounded">
+                                        <div className="w-full h-max flex gap-4 overflow-hidden">
+                                            <div className='h-full w-1/4 overflow-hidden'>
+                                                <Image
+                                                    src={product.productImages?.[0]?.imageUrl || '/default-image.jpg'}
+                                                    alt={product.productName || product.name || 'Product'}
+                                                    width={200}
+                                                    height={200}
+                                                    objectFit="cover"
+                                                    className="h-full w-full object-cover"
                                                 />
-                                                <button onClick={() => handleQuantityChange(1)}>+</button>
                                             </div>
-                                            <label htmlFor="kg" className='flex items-center gap-2'>
-                                                <input
-                                                    type="radio"
-                                                    id='kg'
-                                                    name='unit'
-                                                    checked={unit === 'kg'}
-                                                    onChange={() => handleUnitChange('kg')}
-                                                /> kg
-                                            </label>
-                                            <label htmlFor="gram" className='flex items-center gap-2'>
-                                                <input
-                                                    type="radio"
-                                                    id='gram'
-                                                    name='unit'
-                                                    checked={unit === 'gram'}
-                                                    onChange={() => handleUnitChange('gram')}
-                                                /> gram
-                                            </label>
+                                            <div className='w-3/4'>
+                                                <h1 className='font-semibold text-2xl'>{product.productName || product.name}</h1>
+                                                <div className="flex justify-between">
+                                                    <p><strong className='font-semibold'>Agrication Method:</strong> {product.agricationMethod}</p>
+                                                    <p><strong className='font-semibold'>Price Per kg:</strong> {product.price?.newPrice || product.pricePerKg}</p>
+                                                </div>
+                                                <div className="flex items-center gap-2 mt-3">
+                                                    <button onClick={() => handleQuantityChange(index, -1)} className="px-2 py-1 border rounded">-</button>
+                                                    <p className='text-center w-20 py-1 rounded border'>{product.finalQuantity}</p>
+                                                    <button onClick={() => handleQuantityChange(index, 1)} className="px-2 py-1 border rounded">+</button>
+                                                    <label className='flex gap-2 ml-4 cursor-pointer' htmlFor={`gram-${index}`}>
+                                                        <input
+                                                            type="radio"
+                                                            id={`gram-${index}`}
+                                                            name={`unit-${index}`}
+                                                            checked={product.unit === "gram"}
+                                                            onChange={() => handleUnitChange(index, "gram")}
+                                                            className='cursor-pointer accent-primaryColor'
+                                                        /> gram
+                                                    </label>
+                                                    <label className='flex gap-2 ml-4 cursor-pointer' htmlFor={`kg-${index}`}>
+                                                        <input
+                                                            type="radio"
+                                                            id={`kg-${index}`}
+                                                            name={`unit-${index}`}
+                                                            checked={product.unit === "kg"}
+                                                            onChange={() => handleUnitChange(index, "kg")}
+                                                            className='cursor-pointer accent-primaryColor'
+                                                        /> kg
+                                                    </label>
+
+                                                </div>
+                                                <div className='flex justify-between items-center mt-5'>
+                                                    <p><span className='font-semibold'>Sub Total: </span>{calculateSubtotal(product, index).toFixed(2)}</p>
+                                                    <button
+                                                        onClick={() => handleRemoveProduct(index)}
+                                                        className='flex gap-3 items-center px-4 py-1 bg-red-600 text-white rounded hover:bg-red-800 transition ease-in-out duration-500'
+                                                    >
+                                                        <RiUnpinFill /> Remove
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        {/* <div className="flex justify-end">
-                                        <button className='bg-red-700 px-4 py-1 text-white rounded-md'>Unpin</button>
-                                    </div> */}
                                     </div>
-                                </div>
+                                ))
+                            ) : (
+                                <div>No products found</div>
                             )}
                         </div>
                     </div>
 
-                    {/* Right Content */}
                     <div className="flex flex-col gap-5">
                         <AddressCart />
                         <CardsCart />
@@ -183,25 +185,22 @@ function OrderPage() {
                     </div>
                 </div>
 
-                {/* Bottom Container */}
-                <div className="bottom-container">
+                <div className="bottom-container mt-5">
                     <OrderOverview />
                 </div>
 
-                {/* Delivery Address Form Modal */}
                 {showDeliveryForm && (
                     <div className="fixed inset-0 flex justify-center items-center px-[30vw] backdrop-blur-lg">
                         <div className="relative bg-white rounded-lg">
-                            <DeliveryAddressForm handleClose={handleCloseDeliveryForm} />
+                            <DeliveryAddressForm handleClose={() => setShowDeliveryForm(false)} />
                         </div>
                     </div>
                 )}
 
-                {/* Card Form Modal */}
                 {showCardForm && (
                     <div className="fixed inset-0 flex justify-center items-center px-[30vw] backdrop-blur-lg">
                         <div className="relative bg-white rounded-lg">
-                            <CardForm handleClose={handleCloseCardForm} />
+                            <CardForm handleClose={() => setShowCardForm(false)} />
                         </div>
                     </div>
                 )}
