@@ -79,6 +79,7 @@ export const PUT = async (req: NextRequest) => {
         const body = await req.json();
         const {
             userId,
+            newProfileImage,
             newFirstName,
             newLastName,
             newEmail,
@@ -111,6 +112,7 @@ export const PUT = async (req: NextRequest) => {
         }
         if (newUserType) data.userType = newUserType;
         if (newProfileName) data.profileName = newProfileName;
+        if (newProfileImage) data.profileImage = newProfileImage;
         if (newFavProduct) data.favProduct = newFavProduct;
         if (newFavReview) data.favReview = newFavReview;
 
