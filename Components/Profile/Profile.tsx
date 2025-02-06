@@ -219,29 +219,15 @@ const Profile: React.FC = () => {
                 <Image src={profileImage} alt="" className="text-[100px]" />
               </div>
             )}
-            {/*<button className="absolute bottom-1 right-1 bg-white text-primaryColor ring-1 ring-primaryColor rounded-full p-2 text-[20px] hover:bg-primaryColor hover:ring-white hover:text-white transition ease-in-out duration-300 cursor-pointer">
-              <label htmlFor="file-upload" className="cursor-pointer">
+            <button className="absolute bottom-1 right-1 bg-white text-primaryColor ring-1 ring-primaryColor rounded-full p-2 text-[20px] hover:bg-primaryColor hover:ring-white hover:text-white transition ease-in-out duration-300 cursor-pointer">
                 <BiCamera />
-              </label>
-              <input
-                id="file-upload"
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={(e) => {
-                  if (e.target.files && e.target.files[0]) {
-                    handleImageUpload(e.target.files[0]);
-                  }
-                }}
-              />
-            </button> */}
-            <h1>S3UploadForm</h1>
-            <form onSubmit={handleSubmit}>
+            </button>
+            {/* <form onSubmit={handleSubmit}>
                 <input type="file" accept="image/*" onChange={handleFileChange} />
                 <button type="submit" disabled={!file || uploading}>
                     {uploading ? 'Uploading...' : 'Upload'}
                 </button>
-            </form>
+            </form> */}
 
 
           </div>
