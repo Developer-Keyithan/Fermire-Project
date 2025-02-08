@@ -9,6 +9,8 @@ import Cancelled from "../../../Components/Cancelled/Cancelled";
 import Loader from "../../../Components/Loader/Loader";
 import axios from "axios";
 import router, { useRouter } from "next/navigation";
+import Navbar from "../../../Components/Navbar/Navbar";
+import Footer from "../../../Components/Footer/Footer";
 
 type UserDataType = {
   id: string;
@@ -26,13 +28,13 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [UserData, setUserData] = useState()
 
-   const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const findUser = async () => {
       const response = await axios.get('/api/cookie');
 
-      
+
       if (response.status === 200 && response.data.user.userType !== 'consumer') {
         router.push('/')
       }
@@ -62,9 +64,16 @@ const DashboardPage = () => {
     setActivePanel(panel);
   }
   return (
-    <div className="mx-60">
-      {UserData && <UserDashboard User={UserData} activePanel={activePanel} onPanelClick={handlePanelClick} panels={panels} />}
-      {panelComponents[activePanel]}
+    <div>
+      <div className="sticky top-0 z-50">
+        <Navbar />
+        <hr />
+      </div>
+      <div className="mx-60">
+        {UserData && <UserDashboard User={UserData} activePanel={activePanel} onPanelClick={handlePanelClick} panels={panels} />}
+        {panelComponents[activePanel]}
+      </div>
+      <Footer />
     </div>
   );
 };

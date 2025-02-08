@@ -4,7 +4,7 @@ import Product from '../../../../../lib/Models/Product';
 
 export const POST = async (req: NextRequest) => {
     try {
-        const { productId } = await req.json(); 
+        const { productId } = await req.json();
 
         await DBconnect();
 

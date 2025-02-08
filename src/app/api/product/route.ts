@@ -8,40 +8,20 @@ export const POST = async (req: NextRequest) => {
         const body = await req.json();
         const {
             userId,
-            productImages,
+            ProductImage,
             productName,
             productDescription,
             price,
             categories,
             harvestingDate,
             agricationMethod,
-            freeDelivery
-        } = body;
+            stockValue,
+            unit
+        } = body.newProduct;
 
-        if (!productImages || productImages.length === 0) {
+        if (!ProductImage) {
             return NextResponse.json(
                 { message: "At least one product image is required" },
-                { status: 400 }
-            );
-        }
-
-        if (!categories || categories.length === 0) {
-            return NextResponse.json(
-                { message: "At least one category is required" },
-                { status: 400 }
-            );
-        }
-
-        if (!price || !price.newPrice) {
-            return NextResponse.json(
-                { message: "New price is required" },
-                { status: 400 }
-            );
-        }
-
-        if (freeDelivery === undefined) {
-            return NextResponse.json(
-                { message: "Free delivery status is required" },
                 { status: 400 }
             );
         }
@@ -50,14 +30,22 @@ export const POST = async (req: NextRequest) => {
 
         const newProduct = new Product({
             userId: new Types.ObjectId(userId),
-            productImages,
+            productImages: [
+                { imageUrl: ProductImage }
+            ], // Store image URLs
             productName,
             productDescription,
-            price,
+            price: {
+                newPrice: price
+            },
             categories,
             harvestingDate,
             agricationMethod,
-            freeDelivery
+            stock: {
+                value: stockValue,
+                unit: unit
+            },
+            freeDelivery: false
         });
 
         await newProduct.save();
@@ -68,7 +56,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 201 });
 
     } catch (error: any) {
-        console.error("Error adding product:", error);
+        console.log("Error adding product:", error);
 
         return NextResponse.json({
             message: "Error adding product",
@@ -76,6 +64,7 @@ export const POST = async (req: NextRequest) => {
         }, { status: 500 });
     }
 };
+
 
 export const GET = async () => {
     try {

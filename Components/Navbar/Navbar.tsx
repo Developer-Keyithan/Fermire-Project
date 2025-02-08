@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
                         <Link href='/'>
                             <p className='text-primaryColor text-4xl font-semibold'>Fermire</p>
                         </Link>
-                        <div className="hidden xl:flex gap-4 hover:font-semibold">
+                        <div className="hidden xl:flex gap-4">
                             <Link className="hover:font-semibold transition ease-in-out duration-300" href='/'>Home</Link>
                             <Link className="hover:font-semibold transition ease-in-out duration-300" href='/products'>Shop Now</Link>
                             <Link className="hover:font-semibold transition ease-in-out duration-300" href='#about' onClick={handleAboutClick}>About Us</Link>

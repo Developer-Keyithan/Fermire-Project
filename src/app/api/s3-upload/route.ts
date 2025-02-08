@@ -7,22 +7,22 @@ const s3Client = new S3Client({
         accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID!,
         secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY!
     },
-})
-const uploadFileToS3 = async (file: Buffer, fileName: string, contentType: string) => {
+});
 
-    const fileBuffer = file;
-    console.log(fileName)
+const uploadFileToS3 = async (file: Buffer, fileName: string, contentType: string) => {
+    const fileKey = `Product/${fileName}-${Date.now()}`;
+
     const uploadParams = {
         Bucket: process.env.AWS_S3_BUCKET_NAME!,
-        Key: `Profile/${fileName}-${Date.now()}`,
-        Body: fileBuffer,
+        Key: fileKey,
+        Body: file,
         ContentType: contentType
     };
 
     try {
         const command = new PutObjectCommand(uploadParams);
         await s3Client.send(command);
-        return fileName;
+        return fileKey; // Returning the full file key
     } catch (error) {
         console.error('Error uploading file to S3:', error);
         throw new Error('Error uploading file to S3');
@@ -30,24 +30,25 @@ const uploadFileToS3 = async (file: Buffer, fileName: string, contentType: strin
 };
 
 export const POST = async (req: NextRequest) => {
-
     try {
         const formData = await req.formData();
         const file = formData.get('file') as File | null;
 
         if (!file) {
-            return NextResponse.json({ error: 'File is required.' }, { status: 400 })
+            return NextResponse.json({ error: 'File is required.' }, { status: 400 });
         }
 
-        const buffer = Buffer.from(await file.arrayBuffer())
+        const buffer = Buffer.from(await file.arrayBuffer());
         if (!(file instanceof File)) {
             return NextResponse.json({ error: 'Invalid file.' }, { status: 400 });
         }
 
-        const fileName = await uploadFileToS3(buffer, file.name, file.type);
+        const fileKey = await uploadFileToS3(buffer, file.name, file.type);
+        const imageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_S3_REGION}.amazonaws.com/${fileKey}`;
 
-        return NextResponse.json({ success: true, fileName }, {status: 200})
+        return NextResponse.json({ success: true, imageUrl }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: 'Error uploading file.' })
+        console.error(error);
+        return NextResponse.json({ error: 'Error uploading file.' }, { status: 500 });
     }
-}
+};

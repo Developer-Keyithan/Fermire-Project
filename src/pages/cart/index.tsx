@@ -32,6 +32,7 @@ function CartPage() {
     const [loading, setLoading] = useState<boolean>(true);
     const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
     const router = useRouter();
+    console.log(cartItems)
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -207,6 +208,7 @@ function CartPage() {
                         <p>Your cart is empty.</p>
                     ) : (
                         cartItems.map((cartItem) => (
+                            
                             <div key={cartItem._id} className='flex gap-5 w-full h-max'>
                                 <input
                                     type="checkbox"
@@ -218,15 +220,17 @@ function CartPage() {
                                 <div className="flex w-full ring-1 ring-gray-300 rounded-sm px-4 py-3">
                                     <div className='w-1/5'>
                                         {cartItem.productImages && cartItem.productImages.length > 0 && (
-                                            <Image
-                                                src={cartItem.productImages[0].imageUrl}
-                                                alt={cartItem.productName}
-                                                width={200}
-                                                height={200}
-                                                objectFit="cover"
-                                                className="h-full w-full object-cover"
-                                            />
+                                            // <Image
+                                            //     src={cartItem.productImages[0].imageUrl}
+                                            //     alt={cartItem.productName}
+                                            //     width={200}
+                                            //     height={200}
+                                            //     objectFit="cover"
+                                            //     className="h-full w-full object-cover"
+                                            // />
+                                            <img src={cartItem.productImages[0].imageUrl} />
                                         )}
+                                        
                                     </div>
                                     <div className='w-4/5'>
                                         <div>

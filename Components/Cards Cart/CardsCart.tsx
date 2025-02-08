@@ -64,7 +64,6 @@ function CardsCardItem({ data, isSelected, onClick }: CardsCardItemProps) {
 }
 
 function CardsCard({ data, onSelectCard }: { data: BankCard[], onSelectCard: (card: BankCard) => void }) {
-  console.log(data)
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {

@@ -36,18 +36,21 @@ function OrderPage() {
     const [selectedAddress, setSelectedAddress] = useState<any>({});
     const [cards, setCards] = useState([]);
     const [selectedCard, setSelectedCard] = useState(null);
-    const [unitSelection, setUnitSelection] = useState<{ [key: number]: string }>({});
     const [paymentMethod, setPaymentMethod] = useState<'card' | 'cash'>('card');
 
     const router = useRouter();
     const { id } = router.query;
+    console.log(id)
 
     useEffect(() => {
         const fetchProduct = async () => {
+            console.log(id)
             try {
                 if (id) {
                     const response = await axios.post('/api/product/get-product', { productId: id });
-                    setProducts(response.data.product);
+                    console.log(response.data)
+                    const product = response.data.product
+                    setProducts(product);
                 } else {
                     const storedData = localStorage.getItem("checkoutItems");
                     if (storedData) {
@@ -63,6 +66,8 @@ function OrderPage() {
 
         fetchProduct();
     }, [id]);
+
+    console.log(products)
 
     useEffect(() => {
         const fetchAddresses = async () => {
