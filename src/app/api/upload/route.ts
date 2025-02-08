@@ -30,7 +30,9 @@ export const POST = async (req: NextRequest) => {
     try {
         const command = new PutObjectCommand(uploadParams);
         await s3Client.send(command);
-        NextResponse.json({ message: 'Image Uploaded' }, { status: 200 })
+        const imageUrl = `https://${process.env.NEXT_AWS_S3_BUCKET_NAME}.s3.${region}.amazonaws.com/${uploadParams.Key}`;
+        console.log(imageUrl)
+        NextResponse.json({ message: 'Image Uploaded', imageUrl }, { status: 200 })
     } catch (error) {
         NextResponse.json({ message: 'Failed to upload image' }, { status: 500 })
     }

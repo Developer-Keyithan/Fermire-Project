@@ -10,6 +10,8 @@ import Products from "../../../../Components/Admins/Products";
 import Orders from "../../../../Components/Admins/Orders";
 import Payments from "../../../../Components/Admins/Payments";
 import Offers from "../../../../Components/Admins/Offers";
+import Navbar from "../../../../Components/Navbar/Navbar";
+import Footer from "../../../../Components/Footer/Footer";
 
 type UserDataType = {
   id: string;
@@ -65,19 +67,26 @@ const adminDashboard = () => {
   }
 
   return (
-    <div className="mx-60">
-      <div className="flex justify-between mt-10 gap-[1px]">
-        {panels.map((panel) => (
-          <button
-            key={panel}
-            onClick={() => handlePanelClick(panel)}
-            className={`px-4 w-full py-2 border rounded-sm ${activePanel === panel ? 'text-white bg-primaryColor' : 'text-primaryColor'} transition ease-in-out duration-500`}
-          >
-            {panel}
-          </button>
-        ))}
+    <div>
+      <div className="sticky top-0 z-50">
+        <Navbar />
+        <hr />
       </div>
-      {panelComponents[activePanel]}
+      <div className="mx-60">
+        <div className="flex justify-between mt-10 gap-[1px]">
+          {panels.map((panel) => (
+            <button
+              key={panel}
+              onClick={() => handlePanelClick(panel)}
+              className={`px-4 w-full py-2 border rounded-sm ${activePanel === panel ? 'text-white bg-primaryColor' : 'text-primaryColor'} transition ease-in-out duration-500`}
+            >
+              {panel}
+            </button>
+          ))}
+        </div>
+        {panelComponents[activePanel]}
+      </div>
+      <Footer />
     </div>
   )
 }

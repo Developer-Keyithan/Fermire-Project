@@ -5,6 +5,7 @@ import DeliveryAddress from '../../../../../lib/Models/DeliveryAddress';
 export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const { userId } = body;
+    console.log(userId)
 
     if (!userId) {
         return NextResponse.json(

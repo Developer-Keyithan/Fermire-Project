@@ -85,18 +85,16 @@ const ProductCart: React.FC<productProps> = ({ product }) => {
   return (
     <div className='productcart-container border-[1px] border-gray-800 mt-5 rounded-[5px]'>
       <div className="product-images">
-        {/* <div className="main-image">
-          <Image src={productDescription[0]} className='img' alt="Main product image" />
-        </div> */}
-        <div className="related-images">
+        <img src={product.productImages[0].imageUrl} alt="" className='h-full object-cover' />
+        {/* <div className="related-images">
           <button><IoIosArrowBack /></button>
-          {/* {productImages.map((img: string | StaticImageData, index: number) => (
+          {productImages.map((img: string | StaticImageData, index: number) => (
             <div className="related-image" key={index}>
               <Image className='related-img' src={img as string} alt={`Related image ${index + 1}`} />
             </div>
-          ))} */}
+          ))}
           <button><IoIosArrowForward /></button>
-        </div>
+        </div> */}
 
       </div>
 

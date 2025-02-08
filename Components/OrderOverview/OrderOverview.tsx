@@ -44,7 +44,6 @@ interface OrderOverviewProps {
 }
 
 function OrderOverview({ products, userId, address, card, paymentMethod }: OrderOverviewProps) {
-    console.log(products, userId, address, card);
 
     const [isAddressHere, setIsAddressHere] = useState(false);
     const [isCardHere, setIsCardHere] = useState(false);
@@ -105,8 +104,6 @@ function OrderOverview({ products, userId, address, card, paymentMethod }: Order
             setMaskedCardNumber('');
         }
     }, [address, card, paymentMethod]);
-
-    console.log(isAddressHere)
 
     let totalPrice = 0;
 
