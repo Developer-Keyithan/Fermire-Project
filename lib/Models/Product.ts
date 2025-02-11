@@ -20,6 +20,7 @@ const productSchema = new Schema(
             unit: { type: String, required: true, enum: ['kg', 'gram'] }
         },
         isItAllowedToBeRecommend: { type: Boolean, required: true },
+        isBlockedByAdmin: { type: Boolean, required: false },
         freeDelivery: { type: Boolean, required: true }
     },
     { timestamps: true }

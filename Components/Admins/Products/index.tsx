@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, JSX } from 'react';
 import { BiCategoryAlt, BiSearch } from 'react-icons/bi';
 import { IoPricetagsOutline } from 'react-icons/io5';
 import { LuFilter } from 'react-icons/lu';
@@ -43,7 +43,7 @@ const priceRangeOptions = [
     { label: "Over LKR 1000", value: "1000+" },
 ];
 
-function Products() {
+function Products(id: string): JSX.Element {
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedFilters, setSelectedFilters] = useState<Filters>({
         categories: [],
@@ -63,6 +63,7 @@ function Products() {
     const [recommendationStatus, setRecommendationStatus] = useState<{ [key: string]: boolean }>({});
     const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
     const productsPerPage = 10;
+    const userId = id.id
 
     useEffect(() => {
         const abortController = new AbortController();
@@ -195,10 +196,10 @@ function Products() {
             setCurrentPage(pageNumber);
         }
     };
-
     const handleStopRecommending = async (productId: string) => {
         try {
             const response = await axios.patch('/api/product', {
+                userId,
                 productId: productId,
                 isItAllowedToBeRecommend: false
             });
@@ -212,8 +213,9 @@ function Products() {
                     [productId]: false,
                 }));
             }
-        } catch (error) {
-            toast.error("Failed to recommendation stop");
+        } catch (error: any) {
+            const errorMessage = error.response ? error.response.data.message : "Failed to start recommendation";
+            toast.error(errorMessage);
             console.error("Update error:", error);
         }
     };
@@ -221,6 +223,7 @@ function Products() {
     const handleStartRecommending = async (productId: string) => {
         try {
             const response = await axios.patch('/api/product/', {
+                userId,
                 productId: productId,
                 isItAllowedToBeRecommend: true
             });
@@ -234,8 +237,9 @@ function Products() {
                     [productId]: true,
                 }));
             }
-        } catch (error) {
-            toast.error("Failed to recommendation start");
+        } catch (error: any) {
+            const errorMessage = error.response ? error.response.data.message : "Failed to start recommendation";
+            toast.error(errorMessage);
             console.error("Update error:", error);
         }
     };
@@ -484,7 +488,7 @@ function Products() {
 
             {/* Product List */}
             <div className="grid gap-4 my-6">
-                {currentProduct.map((product, index) => (
+                {currentProduct.map((product) => (
                     <div key={product._id} className="relative p-4 border rounded-lg hover:shadow-lg transition-shadow">
                         <p className='text-primaryColor'><span className='font-semibold'>ID: </span>{product._id}</p>
                         <div className="flex gap-6 mt-4">
