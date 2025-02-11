@@ -1,4 +1,4 @@
-// LandingPage.tsx
+'use client'
 import { useState, useEffect } from 'react';
 import './CSS/LandingPage.css';
 import Product from '../../Components/Product/Product';

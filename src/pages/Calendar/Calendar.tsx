@@ -83,20 +83,20 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect }) => {
     };
 
     return (
-        <div className="bg-white shadow-lg rounded-lg p-6 w-96">
+        <div className="bg-white shadow-[0_0_10px_rgb(0,0,0,0.2)] rounded-lg p-6 w-96">
             {/* Header */}
             <div className="flex justify-between items-center mb-4">
-                <button onClick={handlePrevMonth} type="button" className="px-4 py-2 bg-gray-300 hover:bg-primaryColor hover:text-white rounded text-2xl">
+                <button onClick={handlePrevMonth} type="button" className="px-4 py-2 bg-gray-100 hover:bg-primaryColor hover:text-white rounded text-2xl transition ease-in-out duration-300">
                     <MdNavigateNext className="rotate-180" />
                 </button>
-                <h2 className="text-lg font-bold">{months[month]} {year}</h2>
-                <button onClick={handleNextMonth} type="button" className="px-4 py-2 bg-gray-300 hover:bg-primaryColor hover:text-white rounded text-2xl">
+                <h2 className="text-lg font-semibold">{months[month]} {year}</h2>
+                <button onClick={handleNextMonth} type="button" className="px-4 py-2 bg-gray-100 hover:bg-primaryColor hover:text-white rounded text-2xl transition ease-in-out duration-300">
                     <MdNavigateNext />
                 </button>
             </div>
 
             {/* Weekdays */}
-            <div className="grid grid-cols-7 gap-1 mb-2 text-center font-bold">
+            <div className="grid grid-cols-7 gap-1 mb-2 text-center font-semibold">
                 {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, index) => (
                     <div key={index} className={index === 0 ? "text-red-500" : index === 6 ? "text-orange-500" : ""}>
                         {day}
@@ -118,9 +118,9 @@ const Calendar: React.FC<CalendarProps> = ({ onDateSelect }) => {
                         <div
                             key={index}
                             className={`p-2 rounded cursor-pointer
-                                ${isToday ? "bg-green-100" : ""}
+                                ${isToday ? "bg-green-200 text-primaryColor" : ""}
                                 ${isCurrentMonth ? "bg-gray-100 hover:bg-blue-600 hover:text-white" : "bg-gray-200 text-gray-500 opacity-50"}
-                                ${isSelected ? "bg-primaryColor text-white" : dayOfWeek === 0 ? "text-red-600 bg-red-100" : dayOfWeek === 6 ? "text-orange-600 bg-orange-100" : ""}
+                                ${isSelected ? "bg-primaryColor text-white transition ease-in-out duration-300" : dayOfWeek === 0 ? "text-red-600 bg-red-100" : dayOfWeek === 6 ? "text-orange-600 bg-orange-100" : ""}
                             `}
                             onClick={() => handleDateClick(day, isCurrentMonth, isPrevMonth, isNextMonth)}
                         >

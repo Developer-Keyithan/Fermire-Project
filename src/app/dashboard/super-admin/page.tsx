@@ -10,6 +10,7 @@ import Products from "../../../../Components/Admins/Products";
 import Orders from "../../../../Components/Admins/Orders";
 import Payments from "../../../../Components/Admins/Payments";
 import Requests from "../../../../Components/Admins/Requests";
+import Contacts from "../../../../Components/Admins/Contacts";
 import Offers from "../../../../Components/Admins/Offers";
 import Navbar from "../../../../Components/Navbar/Navbar";
 import Footer from "../../../../Components/Footer/Footer";
@@ -17,6 +18,7 @@ import Footer from "../../../../Components/Footer/Footer";
 
 const adminDashboard = () => {
   const [user, setUser] = useState({
+    _id: '',
     firstName: '',
     lastName: '',
     email: '',
@@ -47,15 +49,16 @@ const adminDashboard = () => {
     findUser()
   }, [])
 
-  const panels = ["Users", "Products", "Orders", "Payments", "Deliveries", "Requests", "Offers"];
+  const panels = ["Users", "Products", "Orders", "Payments", "Deliveries", "Requests", "Contacts", "Offers"];
 
   const panelComponents: { [key: string]: JSX.Element } = {
     Users: <Users />,
-    Products: <Products />,
+    Products: <Products id={user._id}/>,
     Orders: <Orders />,
     Payments: <Payments />,
     Deliveries: <Deliveries />,
     Requests: <Requests />,
+    Contacts: <Contacts />,
     Offers: <Offers />
   };
 
@@ -70,14 +73,20 @@ const adminDashboard = () => {
         <hr />
       </div>
       <div className="mx-60">
-        <div className="flex gap-1 flex-row-reverse text-end w-full text-gray-500 mt-5">
-          <h3 className="font-semibold text-primaryColor">{user.firstName} {user.lastName}</h3>
-          |
-          <p className="capitalize">{user.userType}</p>
-          |
-          <p>{user.email}</p>
-        </div>
-        <div className="flex justify-between mt-5">
+        {user && (
+          <div className="flex items-center justify-end text-sm py-4 text-gray-500">
+            <span className="font-semibold text-primary mr-2">
+              {user.firstName} {user.lastName}
+            </span>
+            <span className="mr-2">|</span>
+            <span className="capitalize mr-2">{user.userType}</span>
+            <span className="mr-2">|</span>
+            <span>{user.email}</span>
+          </div>
+        )}
+      </div>
+      <div className="mx-60">
+        <div className="flex justify-between">
           {panels.map((panel) => (
             <button
               key={panel}

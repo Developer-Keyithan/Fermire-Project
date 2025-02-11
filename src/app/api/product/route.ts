@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import DBconnect from '../../../../lib/db';
 import Product from '../../../../lib/Models/Product';
 import { Types } from 'mongoose';
+import User from '../../../../lib/Models/User';
 
 export const POST = async (req: NextRequest) => {
     try {
@@ -78,17 +79,59 @@ export const GET = async () => {
         return NextResponse.json({ message: "Failed to fetch all products data." }, { status: 500 });
     }
 };
+
 export const PATCH = async (req: NextRequest) => {
     try {
-        const { productId, price, productName, productDescription, categories, harvestingDate, agricationMethod, isItAllowedToBeRecommend, freeDelivery } = await req.json();
+        const { userId, productId, price, productName, productDescription, categories, harvestingDate, agricationMethod, isItAllowedToBeRecommend, freeDelivery } = await req.json();
         await DBconnect();
-
+        console.log(userId)
         const product = await Product.findById(productId);
 
         if (!product) {
             return NextResponse.json({ message: "Product not found" }, { status: 404 });
         }
 
+        // Check user role
+        const user = await User.findById(userId); // Assuming a User model exists
+        const isAdmin = user && (user.userType === "admin" || user.userType === "super-admin");
+        const isSeller = user && user.userType === "seller";
+
+        // Validate the isBlockedByAdmin and isItAllowedToBeRecommend logic
+        if (isItAllowedToBeRecommend === true) {
+            if (product.isBlockedByAdmin === true) {
+                if (isAdmin) {
+                    // Admin can unblock and allow recommendation
+                    product.isBlockedByAdmin = false;
+                    product.isItAllowedToBeRecommend = true;
+                } else {
+                    return NextResponse.json({ message: "Only admin can unblock and allow recommendations for blocked products." }, { status: 403 });
+                }
+            } else {
+                // If isBlockedByAdmin is false, only the seller can update the recommendation
+                if (isSeller) {
+                    product.isItAllowedToBeRecommend = true;
+                    product.isBlockedByAdmin = false; // No change needed if it's already false
+                } else {
+                    return NextResponse.json({ message: "Only the seller can allow the recommendation for non-blocked products." }, { status: 403 });
+                }
+            }
+        }
+
+        // If trying to disable recommendation
+        if (isItAllowedToBeRecommend === false) {
+            if (product.isBlockedByAdmin === true) {
+                return NextResponse.json({ message: "This product recommendation is already stopped by the platform." }, { status: 400 });
+            } else {
+                if (isAdmin) {
+                    product.isItAllowedToBeRecommend = false;
+                    product.isBlockedByAdmin = true; // Admin can block the product
+                } else {
+                    return NextResponse.json({ message: "Only the platform (admin) can stop recommendation for non-blocked products." }, { status: 403 });
+                }
+            }
+        }
+
+        // Update other product fields
         if (price && product.price.newPrice !== price) {
             product.price.oldPrice = product.price.newPrice;
             product.price.newPrice = price;
@@ -99,12 +142,9 @@ export const PATCH = async (req: NextRequest) => {
         if (categories) product.categories = categories;
         if (harvestingDate) product.harvestingDate = harvestingDate;
         if (agricationMethod) product.agricationMethod = agricationMethod;
-        if (isItAllowedToBeRecommend === false) product.isItAllowedToBeRecommend = false;
-        if (isItAllowedToBeRecommend === true) product.isItAllowedToBeRecommend = true;
         if (freeDelivery !== undefined) product.freeDelivery = freeDelivery;
 
         await product.save();
-
 
         return NextResponse.json({
             message: "Product updated successfully",
@@ -116,6 +156,7 @@ export const PATCH = async (req: NextRequest) => {
         return NextResponse.json({ message: "Error updating product", error: error.message }, { status: 500 });
     }
 };
+
 
 export const DELETE = async (req: NextRequest) => {
     try {

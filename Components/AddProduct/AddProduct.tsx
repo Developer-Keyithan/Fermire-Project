@@ -1,12 +1,18 @@
 'use client'
 
+import '../../src/app/globals.css'
 import axios from 'axios';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import Calendar from '../Calendar/Calendar';
 import { toast } from 'react-toastify';
+import { IoClose } from 'react-icons/io5';
 
-const UploadProduct = () => {
+interface CardFormProps {
+    handleClose: () => void;
+}
+
+const UploadProduct: React.FC<CardFormProps> = ({ handleClose }) => {
     const [file, setFile] = useState<File | null>(null);
     const [uploading, setUploading] = useState(false);
     const [productName, setProductName] = useState<string>('');
@@ -113,7 +119,7 @@ const UploadProduct = () => {
                 if (addProduct.status === 201) {
                     toast.success('Product uploaded.')
                 }
-                
+
             }
         } catch (error) {
             toast.error('Failed to upload product.')
@@ -155,7 +161,7 @@ const UploadProduct = () => {
     };
 
     return (
-        <div className="mx-60 p-6 bg-white rounded-lg ring-1 ring-gray-300 shadow-sm">
+        <div className="relative mx-60 p-6 bg-white rounded-lg ring-1 ring-gray-300 shadow-sm">
             <h1 className="text-3xl font-bold text-gray-800 mb-8 text-center">Upload Your New Product</h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -188,7 +194,7 @@ const UploadProduct = () => {
                     <label className="block text-sm font-medium text-gray-700">Product Name</label>
                     <input
                         type="text"
-                        className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border rounded-md outline-primaryColor"
                         value={productName}
                         onChange={(e) => setProductName(e.target.value)}
                         required
@@ -202,7 +208,7 @@ const UploadProduct = () => {
                         <div className="relative">
                             <input
                                 type="number"
-                                className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                className="w-full px-4 py-2 border rounded-md outline-primaryColor no-spinner"
                                 placeholder="0.00 LKR"
                                 value={newPrice || ''}
                                 onChange={(e) => setNewPrice(Number(e.target.value))}
@@ -216,7 +222,7 @@ const UploadProduct = () => {
                         <label className="block text-sm font-medium text-gray-700">District</label>
                         <input
                             type="text"
-                            className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-2 border rounded-md outline-primaryColor"
                             value={district}
                             onChange={(e) => setDistrict(e.target.value)}
                             required
@@ -228,7 +234,7 @@ const UploadProduct = () => {
                         <label className="block text-sm font-medium text-gray-700">Available Stock</label>
                         <input
                             type="number"
-                            className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full px-4 py-2 border rounded-md outline-primaryColor no-spinner"
                             value={stock}
                             onChange={(e) => setStock(e.target.value)}
                             required
@@ -306,7 +312,7 @@ const UploadProduct = () => {
                 <div className="space-y-2">
                     <label className="block text-sm font-medium text-gray-700">Product Description</label>
                     <textarea
-                        className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-32"
+                        className="w-full px-4 py-2 border rounded-md outline-primaryColor"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
@@ -342,10 +348,10 @@ const UploadProduct = () => {
                                 className="cursor-pointer w-60 h-max px-4 py-2 border rounded-md bg-white hover:bg-gray-50"
                             >
                                 {new Date(harvestingDate).toLocaleDateString('en-GB', {
-                                            day: '2-digit',
-                                            month: 'short',
-                                            year: 'numeric'
-                                        })|| 'Select harvest date'}
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric'
+                                }) || 'Select harvested date'}
                             </div>
                             {isCalenderOpen && (
                                 <div className="absolute z-10 bottom-12 right-0">
@@ -361,7 +367,7 @@ const UploadProduct = () => {
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    disabled={!file || !productName || !description || !newPrice || !district || !agricationMethod || !stock || !unit || !categories || !harvestingDate || uploading}
+                    disabled={!file || !productName || !description || !newPrice || !district || !agricationMethod || !stock || !unit || !categories[0] || !harvestingDate || uploading}
                     className="w-full py-3 px-4 bg-primaryColor text-white font-medium rounded-md hover:bg-primaryButtonColor focus:outline-none focus:ring-2 focus:ring-primaryButtonColor focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {uploading ? (
@@ -406,6 +412,10 @@ const UploadProduct = () => {
                     </div>
                 </div>
             )}
+
+            <button className="absolute top-[8px] right-[8px] text-xl hover:bg-red-800 hover:text-white rounded-full transition ease-in-out duration-300 p-[1px]" onClick={handleClose}>
+                <IoClose />
+            </button>
         </div>
     );
 }
