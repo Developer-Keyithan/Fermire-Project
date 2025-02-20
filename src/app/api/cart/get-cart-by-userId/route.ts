@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import Cart from "../../../../../lib/Models/Cart";
-import Product from "../../../../../lib/Models/Product";
-import connectDb from "../../../../../lib/db";
+import Cart from "../../../lib/Models/Cart";
+import Product from "../../../lib/Models/Product";
+import connectDb from "../../../lib/db";
 
 export const POST = async (req: NextRequest) => {
     try {

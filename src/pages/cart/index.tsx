@@ -1,10 +1,10 @@
 import './style.css';
-import Navbar from '../../../Components/Navbar/Navbar';
+import Navbar from '../../app/Components/Navbar/Navbar';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { BsCartX } from 'react-icons/bs';
-import Footer from '../../../Components/Footer/Footer';
+import Footer from '../../app/Components/Footer/Footer';
 import { RiUnpinFill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';

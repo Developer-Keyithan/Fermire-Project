@@ -1,14 +1,14 @@
 import './style.css';
-import Review from '../../../../Components/Reviews/Review';
-import ProductCart from '../../../../Components/Product Cart/ProductCart';
-import Footer from '../../../../Components/Footer/Footer';
-import Cart from '../../../../Components/Cart/Cart';
-import Navbar from '../../../../Components/Navbar/Navbar';
+import Review from '../../../app/Components/Reviews/Review';
+import ProductCart from '../../../app/Components/Product Cart/ProductCart';
+import Footer from '../../../app/Components/Footer/Footer';
+import Cart from '../../../app/Components/Cart/Cart';
+import Navbar from '../../../app/Components/Navbar/Navbar';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { LuLoaderCircle } from 'react-icons/lu';
-import Loader from '../../../../Components/Loader/Loader';
+import Loader from '../../../app/Components/Loader/Loader';
 
 interface Product {
   _id: string;

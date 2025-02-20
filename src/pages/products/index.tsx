@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 import axios from 'axios';
 
-import Product from '../../../Components/Product/Product';
-import Navbar from '../../../Components/Navbar/Navbar';
-import Footer from '../../../Components/Footer/Footer';
-import Pagination from '../../../Components/Pagination/Pagination';
+import Product from '../../app/Components/Product/Product';
+import Navbar from '../../app/Components/Navbar/Navbar';
+import Footer from '../../app/Components/Footer/Footer';
+import Pagination from '../../app/Components/Pagination/Pagination';
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);

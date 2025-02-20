@@ -1,50 +1,37 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import transactionModel from "../../../../lib/Models/Transaction";
-import connectDB from "../../../../lib/db";
-import { NextResponse } from "next/server";
+import transactionModel from "../../lib/Models/Transaction";
+import connectDB from "../../lib/db";
+import { NextRequest, NextResponse } from "next/server";
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
-
-// export const POST = async (req: NextApiRequest) => {
-//     try {
-//         const body = await req.body;
-//         const { consumerId, orderId, productId, sellerId, price, totalTransactionAmount, status } = body;
-
-//         await connectDB();
-
-//         const transaction = new transactionModel({
-//             consumerId,
-//             orderId,
-//             products: [{ productId, sellerId, price }],
-//             totalTransactionAmount,
-//             status
-//         });
-
-//         await transaction.save();
-
-
-//         return NextResponse.json({ message: 'Transaction successfull' });
-//     } catch (error) {
-//         return NextResponse.json({ message: 'Transaction failed' });
-//     }
-// };
-
-export const POST = async (req: NextResponse) => {
+export const POST = async (req: NextRequest) => {
     try {
-        const { amount } = await req.json();
+        const body = await req.json();
+        const { userId, orderId, transactionId, amount, status } = body;
 
-        const payment = await stripe.paymentIntents.create({
-            amount: amount,
-            currency: 'usd',
-            automatic_payment_methods: { enabled: true }
+        if (!userId || !orderId || !amount || !status) {
+            return NextResponse.json({ message: 'Invalid request' });
+        }
+
+        let paymentStatus = '';
+        if (status === "succeeded") {
+            paymentStatus = "Paid";
+        } else {
+            paymentStatus = "Pending";
+        }
+
+        await connectDB();
+
+        const transaction = new transactionModel({
+            userId,
+            orderId,
+            transactionId,
+            amount,
+            status: paymentStatus
         });
 
-        return NextResponse.json({ clientSecret: payment.client_secret })
+        await transaction.save();
+
+        return NextResponse.json({ message: 'Transaction successfull' });
     } catch (error) {
-        console.error('Internal Error:', error)
-        return NextResponse.json(
-            { error: `Internal Server Error: ${error}` },
-            { status: 500 }
-        );
+        return NextResponse.json({ message: 'Transaction failed' });
     }
-}
+};

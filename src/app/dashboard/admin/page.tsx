@@ -3,12 +3,12 @@
 import { useEffect, useState, JSX } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Users from "../../../../Components/Dashboard Components/Admins/Users";
-import Products from "../../../../Components/Dashboard Components/Admins/Products";
-import Orders from "../../../../Components/Dashboard Components/Admins/Orders";
-import Contacts from "../../../../Components/Dashboard Components/Admins/Contacts";
-import Navbar from "../../../../Components/Navbar/Navbar";
-import Footer from "../../../../Components/Footer/Footer";
+import Users from "../../Components/Dashboard Components/Admins/Users";
+import Products from "../../Components/Dashboard Components/Admins/Products";
+import Orders from "../../Components/Dashboard Components/Admins/Orders";
+import Contacts from "../../Components/Dashboard Components/Admins/Contacts";
+import Navbar from "../../Components/Navbar/Navbar";
+import Footer from "../../Components/Footer/Footer";
 
 
 const adminDashboard = () => {

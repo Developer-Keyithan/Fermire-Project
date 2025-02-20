@@ -3,11 +3,11 @@
 import { useState, useEffect, JSX } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Navbar from "../../../Components/Navbar/Navbar";
-import Footer from "../../../Components/Footer/Footer";
-import UserDashboard from "../../../Components/Dashboard Components/User/User Dashboard Controller/UserDashboardController";
-import Orders from "../../../Components/Dashboard Components/User/Orders/Orders";
-import Reviews from "../../../Components/Dashboard Components/User/Reviews/Reviews";
+import Navbar from "../Components/Navbar/Navbar";
+import Footer from "../Components/Footer/Footer";
+import UserDashboard from "../Components/Dashboard Components/User/User Dashboard Controller/UserDashboardController";
+import Orders from "../Components/Dashboard Components/User/Orders/Orders";
+import Reviews from "../Components/Dashboard Components/User/Reviews/Reviews";
 
 const DashboardPage = () => {
   const [activePanel, setActivePanel] = useState<string>("Orders");

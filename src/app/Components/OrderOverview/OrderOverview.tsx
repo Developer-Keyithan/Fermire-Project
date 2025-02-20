@@ -107,7 +107,7 @@ function OrderOverview({ products, userId, address, paymentMethod }: OrderOvervi
 
             if (response.status === 200 && !isCashOnDelivery) {
                 localStorage.removeItem('checkoutItems');
-                router.push(`/payment?a=${finalPrice}&o=${response.data.newOrder._id}`);
+                router.push(`/payment?a=${finalPrice}&o=${response.data.newOrder._id}&u=${userId}`);
             }
         } catch (error: any) {
             console.error('Error placing order:', error);

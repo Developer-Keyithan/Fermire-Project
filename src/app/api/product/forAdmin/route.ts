@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import DBconnect from '../../../../../lib/db';
-import Product from '../../../../../lib/Models/Product';
+import DBconnect from '../../../lib/db';
+import Product from '../../../lib/Models/Product';
 
 export const GET = async () => {
     try {

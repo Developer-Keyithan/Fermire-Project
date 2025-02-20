@@ -7,8 +7,8 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { BiUser } from 'react-icons/bi';
-import Navbar from '../../../Components/Navbar/Navbar';
-import Footer from '../../../Components/Footer/Footer';
+import Navbar from '../../app/Components/Navbar/Navbar';
+import Footer from '../../app/Components/Footer/Footer';
 
 const Login: React.FC = () => {
     const router = useRouter();

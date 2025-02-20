@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import DBconnect from '../../../../lib/db';
-import Product from '../../../../lib/Models/Product';
+import DBconnect from '../../lib/db';
+import Product from '../../lib/Models/Product';
 import { Types } from 'mongoose';
-import User from '../../../../lib/Models/User';
+import User from '../../lib/Models/User';
 
 export const POST = async (req: NextRequest) => {
     try {
