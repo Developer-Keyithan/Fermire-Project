@@ -6,6 +6,23 @@ import DBconnect from "../../../../../lib/db";
 import DeliveryAddress from "../../../../../lib/Models/DeliveryAddress";
 import Card from "../../../../../lib/Models/BankCard";
 
+interface ProductInfo {
+    productId: string;
+    imageUrl: string;
+    productName: string;
+    productDescription: string;
+    agricationMethod: string;
+    categories: string[];
+    harvestingDate: string;
+    freeDelivery: boolean;
+    quantity: number;
+    price: number;
+    isCanceled: boolean;
+    isDelayed: boolean;
+    cancellingReason: string;
+    deleyingReasong: string;
+}
+
 export const POST = async (req: NextRequest) => {
     try {
         const body = await req.json();
@@ -32,7 +49,7 @@ export const POST = async (req: NextRequest) => {
                 return NextResponse.json({ message: "No orders found for this user" }, { status: 404 });
             }
 
-            const productIds = orders.flatMap(order => order.products.map(product => product.productId.toString()));
+            const productIds = orders.flatMap(order => order.products.map((product: ProductInfo) => product.productId.toString()));
             const productDetails = await Product.find({ _id: { $in: productIds } });
 
             const productInfoMap = productDetails.reduce((acc, product) => {
@@ -57,7 +74,7 @@ export const POST = async (req: NextRequest) => {
                     createdAt: order.createdAt,
                     updatedAt: order.updatedAt,
                     deliveryAddress: address ? address : null,
-                    products: order.products.map(product => ({
+                    products: order.products.map((product: any) => ({
                         productId: product.productId,
                         quantity: product.quantity,
                         price: product.price,
@@ -70,7 +87,6 @@ export const POST = async (req: NextRequest) => {
                     })),
                     isCashOnDelivery: order.isCashOnDelivery,
                     isCanceled: order.isCanceled,
-                    card: card || null,
                     status: order.status
                 };
             }));
@@ -94,7 +110,7 @@ export const POST = async (req: NextRequest) => {
             }
 
             const filteredOrders = orders.map(order => {
-                const filteredProducts = order.products.filter(product =>
+                const filteredProducts = order.products.filter((product: ProductInfo) =>
                     productIds.includes(product.productId.toString())
                 );
 
@@ -120,7 +136,7 @@ export const POST = async (req: NextRequest) => {
                 orderId: order._id,
                 createdAt: order.createdAt,
                 updatedAt: order.updatedAt,
-                products: order.products.map(product => ({
+                products: order.products.map((product: ProductInfo) => ({
                     productId: product.productId,
                     quantity: product.quantity,
                     price: product.price,

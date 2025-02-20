@@ -9,12 +9,8 @@ import { toast } from 'react-toastify';
 
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { FaGoogle, FaFacebook, FaApple, FaTiktok } from "react-icons/fa";
-import { TiHome } from "react-icons/ti";
-import { HiMiniShoppingBag } from "react-icons/hi2";
-import { RiMoonClearFill } from "react-icons/ri";
 import { BiUser } from 'react-icons/bi';
 
-import Toggle from '../../../Components/Toggle/Toggle';
 import Navbar from '../../../Components/Navbar/Navbar';
 import Footer from '../../../Components/Footer/Footer';
 
@@ -110,7 +106,11 @@ const SignUp = () => {
                         justifyContent: 'center'
                     }
                 });
-                router.push('/products');
+                if (response.data.user.userType === 'consumer') {
+                    router.push('/');
+                } else {
+                    router.push('/dashboard');
+                }
             } else {
                 toast.error(response.data.error, {
                     style: {
