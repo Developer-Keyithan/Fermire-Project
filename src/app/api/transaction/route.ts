@@ -1,5 +1,6 @@
-import transactionModel from "../../lib/Models/Transaction";
-import connectDB from "../../lib/db";
+import userModel from "@/app/lib/Models/User";
+import transactionModel from "@/app/lib/Models/Transaction";
+import connectDB from "@/app/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
@@ -34,5 +35,34 @@ export const POST = async (req: NextRequest) => {
     } catch (error) {
         console.log(error)
         return NextResponse.json({ message: 'Transaction failed' });
+    }
+};
+
+export const GET = async () => {
+    try {
+        await connectDB();
+
+        const transactions = await transactionModel.find();
+        console.log(transactions);
+
+        const mergedTransactions = (await Promise.all(
+            transactions.map(async (transaction) => {
+                const user = await userModel.findById(transaction.userId);
+                
+                return {
+                    ...transaction.toObject(),
+                    user: {
+                        firstName: user?.firstName,
+                        lastName: user?.lastName,
+                        email: user?.email
+                    }
+                };
+            })
+        )).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+        return NextResponse.json({ transactions: mergedTransactions });
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({ message: 'Failed to fetch transactions.' });
     }
 };
