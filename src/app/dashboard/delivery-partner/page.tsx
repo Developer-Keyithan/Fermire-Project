@@ -4,8 +4,8 @@ import { useEffect, useState, JSX } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import '../../../../src/app/globals.css'
-import Navbar from "../../../../Components/Navbar/Navbar";
-import Footer from "../../../../Components/Footer/Footer";
+import Navbar from "../../Components/Navbar/Navbar";
+import Footer from "../../Components/Footer/Footer";
 import { toast } from "react-toastify";
 
 interface Product {

@@ -1,11 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react';
 import './CSS/LandingPage.css';
-import Product from '../../Components/Product/Product';
-import About from '../../Components/About/About';
-import Navbar from '../../Components/Navbar/Navbar';
-import Footer from '../../Components/Footer/Footer';
-import Hero from '../../Components/Hero/Hero';
+import Product from './Components/Product/Product';
+import About from './Components/About/About';
+import Navbar from './Components/Navbar/Navbar';
+import Footer from './Components/Footer/Footer';
+import Hero from './Components/Hero/Hero';
 import { FaArrowRightLong } from "react-icons/fa6";
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/navigation';

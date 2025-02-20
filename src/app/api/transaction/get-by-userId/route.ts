@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import DBconnect from "../../../../../lib/db";
-import Transaction from "../../../../../lib/Models/Transaction";
+import DBconnect from "../../../lib/db";
+import Transaction from "../../../lib/Models/Transaction";
 
 export const POST = async (req: NextRequest) => {
     const body = await req.json();

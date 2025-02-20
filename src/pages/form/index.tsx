@@ -9,8 +9,8 @@ import Link from 'next/link';
 import { MdImage } from 'react-icons/md';
 import { BiUser } from 'react-icons/bi';
 
-import Navbar from '../../../Components/Navbar/Navbar';
-import Footer from '../../../Components/Footer/Footer';
+import Navbar from '../../app/Components/Navbar/Navbar';
+import Footer from '../../app/Components/Footer/Footer';
 
 const sellerForm = () => {
     const router = useRouter();

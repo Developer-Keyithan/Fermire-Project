@@ -3,15 +3,15 @@
 import { useState, useEffect, JSX } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { cn } from "../../../../lib/utils";
-import Loader from '../../../../Components/Loader/Loader';
-import Footer from "../../../../Components/Footer/Footer";
-import Navbar from "../../../../Components/Navbar/Navbar";
+import { cn } from "../../lib/utils";
+import Loader from '../../Components/Loader/Loader';
+import Footer from "../../Components/Footer/Footer";
+import Navbar from "../../Components/Navbar/Navbar";
 
-import Analytics from "../../../../Components/Dashboard Components/Business/Analytics";
-import Products from "../../../../Components/Dashboard Components/Business/Products";
-import Orders from "../../../../Components/Dashboard Components/Business/Orders";
-import Reviews from "../../../../Components/Dashboard Components/Business/Reviews";
+import Analytics from "../../Components/Dashboard Components/Business/Analytics";
+import Products from "../../Components/Dashboard Components/Business/Products";
+import Orders from "../../Components/Dashboard Components/Business/Orders";
+import Reviews from "../../Components/Dashboard Components/Business/Reviews";
 
 type UserDataType = {
   id: string;

@@ -1,12 +1,12 @@
 "use client"
 
-import Checkout from "../../../Components/Checkout/Checkout"
-import ConvertToSubcurrency from "../../../lib/ConvertToSubcurrency"
+import Checkout from "../../app/Components/Checkout/Checkout"
+import ConvertToSubcurrency from "../../app/lib/ConvertToSubcurrency"
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from "@stripe/stripe-js"
 import '../../app/globals.css'
-import Navbar from "../../../Components/Navbar/Navbar"
-import Footer from "../../../Components/Footer/Footer"
+import Navbar from "../../app/Components/Navbar/Navbar"
+import Footer from "../../app/Components/Footer/Footer"
 import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -15,14 +15,15 @@ if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
     console.error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined")
 }
 
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY 
-    ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) 
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY
+    ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
     : Promise.reject(new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined"));
 
 const Payment = () => {
     const searchParams = useSearchParams();
     const amount = searchParams ? Number(searchParams.get("a")) : 0;
     const orderId = searchParams ? String(searchParams.get("o")) : '';
+    const userId = searchParams ? String(searchParams.get("u")) : '';
     const router = useRouter();
     const [firstName, setFirstName] = useState<string>('')
     const [lastName, setLastName] = useState<string>('')
@@ -73,7 +74,7 @@ const Payment = () => {
                         currency: 'usd'
                     }}
                 >
-                    <Checkout finalAmount={amount} orderId={orderId} />
+                    <Checkout finalAmount={amount} orderId={orderId} userId={userId} />
                 </Elements>
             </div>
             <Footer />

@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import Image from 'next/image';
-import Navbar from '../../../Components/Navbar/Navbar';
-import Footer from '../../../Components/Footer/Footer';
-import AddOne from '../../../Components/Add One/AddOne';
-import AddressCart from '../../../Components/Address Cart/AddressCart';
-import CardsCart from '../../../Components/Cards Cart/CardsCart';
-import OrderOverview from '../../../Components/OrderOverview/OrderOverview';
-import Coupon from '../../../Components/Coupon/Coupon';
-import DeliveryAddressForm from '../../../Components/Delivery Address Form/DeliveryAddressForm';
-import CardForm from '../../../Components/cardForm/index';
+import Navbar from '../../app/Components/Navbar/Navbar';
+import Footer from '../../app/Components/Footer/Footer';
+import AddOne from '../../app/Components/Add One/AddOne';
+import AddressCart from '../../app/Components/Address Cart/AddressCart';
+import CardsCart from '../../app/Components/Cards Cart/CardsCart';
+import OrderOverview from '../../app/Components/OrderOverview/OrderOverview';
+import Coupon from '../../app/Components/Coupon/Coupon';
+import DeliveryAddressForm from '../../app/Components/Delivery Address Form/DeliveryAddressForm';
+import CardForm from '../../app/Components/cardForm/index';
 import { RiUnpinFill } from 'react-icons/ri';
 
 interface Product {

@@ -6,7 +6,7 @@ import ConvertToSubcurrency from "../../lib/ConvertToSubcurrency"
 import axios from "axios"
 import { toast } from "react-toastify"
 
-const Checkout = ({ finalAmount, orderId }: { finalAmount: number, orderId: string }) => {
+const Checkout = ({ finalAmount, orderId, userId }: { finalAmount: number, orderId: string, userId: string }) => {
   const stripe = useStripe();
   const elements = useElements();
   const amount = Number((finalAmount / 296.73).toFixed(2));
@@ -16,7 +16,7 @@ const Checkout = ({ finalAmount, orderId }: { finalAmount: number, orderId: stri
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    fetch('/api/transaction', {
+    fetch('/api/transaction/stripe', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -30,15 +30,6 @@ const Checkout = ({ finalAmount, orderId }: { finalAmount: number, orderId: stri
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-
-    const updateOrderResponse = await axios.put('/api/order', {
-      orderId: orderId,
-      status: 'placed'
-    })
-
-    if (updateOrderResponse.status !== 200) {
-      toast.error('Payment failed')
-    }
 
     if (!stripe || !elements) {
       return;
@@ -56,9 +47,9 @@ const Checkout = ({ finalAmount, orderId }: { finalAmount: number, orderId: stri
       elements,
       clientSecret,
       confirmParams: {
-        return_url: 'http://localhost:3000/dashboard'
+        return_url: `http://localhost:3000/success?amount=${finalAmount}&orderId=${orderId}&userId=${userId}`
       }
-    })
+    });
 
     if (error) {
       setErrorMessage(error.message)

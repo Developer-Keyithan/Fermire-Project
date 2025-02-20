@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import DBconnect from "../../../../../lib/db";
-import RatingReviews from "../../../../../lib/Models/ReviewRating";
+import DBconnect from "../../../lib/db";
+import RatingReviews from "../../../lib/Models/ReviewRating";
 
 export const POST = async (req: NextRequest) => {
     try {

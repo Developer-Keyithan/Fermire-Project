@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import DBconnect from '../../../../lib/db';
-import DeliveryAddress from '../../../../lib/Models/DeliveryAddress';
+import DBconnect from '../../lib/db';
+import DeliveryAddress from '../../lib/Models/DeliveryAddress';
 
 export const POST = async (req: NextResponse) => {
     try {
