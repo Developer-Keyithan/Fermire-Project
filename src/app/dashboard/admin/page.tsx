@@ -28,7 +28,7 @@ const adminDashboard = () => {
     const findUser = async () => {
       const response = await axios.get('/api/cookie');
 
-      if (response.status === 200 && response.data.user.userType === 'super-admin') {
+      if (response.status === 200 && response.data.user.userType === 'admin') {
         const id = response.data.user.id;
         const superAdmin = await axios.post('/api/user/get-user', {
           userId: id

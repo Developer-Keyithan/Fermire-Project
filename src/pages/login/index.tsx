@@ -70,7 +70,11 @@ const Login: React.FC = () => {
                         justifyContent: 'center'
                     },
                 });
-                router.push('/dashboard');
+                if (response.data.user.userType === 'consumer') {
+                    router.push('/');
+                } else {
+                    router.push('/dashboard');
+                }
             } else {
                 toast.error(response.data.error, {
                     style: {

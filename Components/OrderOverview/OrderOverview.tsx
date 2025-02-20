@@ -102,7 +102,7 @@ function OrderOverview({ products, userId, address, paymentMethod }: OrderOvervi
             if (response.status === 200 && isCashOnDelivery) {
                 localStorage.removeItem('checkoutItems');
                 toast.success('Order placed successfully.');
-                router.push('/cart');
+                router.push('/dashboard');
             }
 
             if (response.status === 200 && !isCashOnDelivery) {

@@ -43,7 +43,7 @@ const priceRangeOptions = [
     { label: "Over LKR 1000", value: "1000+" },
 ];
 
-function Products(id: string): JSX.Element {
+function Products({ id }: { id: string }) {
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedFilters, setSelectedFilters] = useState<Filters>({
         categories: [],
@@ -63,7 +63,7 @@ function Products(id: string): JSX.Element {
     const [recommendationStatus, setRecommendationStatus] = useState<{ [key: string]: boolean }>({});
     const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
     const productsPerPage = 10;
-    const userId = id.id
+    const userId = id
 
     useEffect(() => {
         const abortController = new AbortController();

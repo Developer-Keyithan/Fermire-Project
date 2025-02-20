@@ -17,18 +17,13 @@ interface User {
   profileImage: string;
 }
 
-
 const Profile: React.FC = () => {
   const [file, setFile] = useState<File | null>(null)
-  const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [id, setId] = useState<string>('')
-  const [error, setError] = useState<string | null>(null);
   const [close, setClose] = useState(false);
   const [isLogoutVisible, setIsLogoutVisible] = useState(true);
   const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
-  const [isImage, setIsImage] = useState(true);
   const [isEmailEdit, setIsEmailEdit] = useState(false);
   const [isMobileNumberEdit, setIsMobileNumberEdit] = useState(false);
 
@@ -51,6 +46,7 @@ const Profile: React.FC = () => {
         toast.success('Logout Successful');
         setIsLogoutVisible(false);
         setClose(true);
+        router.push('/login');
       } else {
         toast.error('Oops! Logout Failed.');
       }
@@ -78,12 +74,10 @@ const Profile: React.FC = () => {
           setUser(fetchedUser);
           setEditedEmail(fetchedUser.email);
           setEditedMobileNumber(fetchedUser.mobileNumber.join(', '));
-          setError(null);
         }
       } catch (error) {
         const axiosError = error as AxiosError;
         if (isMounted) {
-          setError(axiosError.message || 'Failed to fetch user data');
           setUser(null);
         }
       }
@@ -136,43 +130,6 @@ const Profile: React.FC = () => {
       setFile(e.target.files[0]);
     }
   }
-  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const files = event.target.files;
-  //   if (!files) return;
-  //   const file = files[0];
-  //   if (file) {
-  //     const objectUrl = URL.createObjectURL(file);
-  //     setPreview(objectUrl);
-  //     setImageName(file.name)
-  //   }
-  // };
-
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if(!file) return;
-
-    setUploading(true)
-
-    const formData = new FormData()
-    formData.append('file', file)
-
-    try {
-        const response = await fetch('/api/s3-upload' ,{
-            method: 'POST',
-            body: formData
-        })
-
-        const data = await response.json();
-        console.log(response.status)
-        setUploading(false)
-        
-    } catch (error) {
-        console.log(error)
-        setUploading(false)
-    }
-}
-
 
   if (close) return null;
 
@@ -210,25 +167,12 @@ const Profile: React.FC = () => {
       <div className="max-fit mx-auto bg-white rounded-md p-4 relative">
         <div className="flex flex-col items-center gap-5 mt-7">
           <div className="relative">
-            {isImage ? (
-              <div className="flex items-center justify-center border-[1px] bg-primaryColor rounded-full p-8 cursor-pointer h-40 w-40">
-                <p className="font-semibold mt-1 text-[60px] text-white">{nameLogo}</p>
-              </div>
-            ) : (
-              <div className="text-center border-[1px] border-black rounded-full p-2 w-fit cursor-pointer">
-                <Image src={profileImage} alt="" className="text-[100px]" />
-              </div>
-            )}
+            <div className="flex items-center justify-center border-[1px] bg-primaryColor rounded-full p-8 cursor-pointer h-40 w-40">
+              <p className="font-semibold mt-1 text-[60px] text-white">{nameLogo}</p>
+            </div>
             <button className="absolute bottom-1 right-1 bg-white text-primaryColor ring-1 ring-primaryColor rounded-full p-2 text-[20px] hover:bg-primaryColor hover:ring-white hover:text-white transition ease-in-out duration-300 cursor-pointer">
-                <BiCamera />
+              <BiCamera />
             </button>
-            {/* <form onSubmit={handleSubmit}>
-                <input type="file" accept="image/*" onChange={handleFileChange} />
-                <button type="submit" disabled={!file || uploading}>
-                    {uploading ? 'Uploading...' : 'Upload'}
-                </button>
-            </form> */}
-
 
           </div>
           <p className="font-semibold">{name}</p>
@@ -286,10 +230,16 @@ const Profile: React.FC = () => {
               )}
             </div>
           </div>
+          <a href="/dashboard">
+            <button
+              className="bg-primaryColor hover:bg-primaryButtonHoverColor text-white rounded-sm w-full px-2 py-1 mt-2 transition ease-in-out duration-500"
+            >
+              Dashboard
+            </button></a>
 
           {isLogoutVisible && (
             <button
-              className="bg-red-700 hover:bg-red-800 text-white rounded-sm px-2 py-1 mt-2 transition ease-in-out duration-500"
+              className="bg-red-700 hover:bg-red-800 text-white rounded-sm px-2 py-1 transition ease-in-out duration-500"
               onClick={handleLogout}
             >
               Logout

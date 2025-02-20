@@ -15,12 +15,14 @@ if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
     console.error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined")
 }
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY 
+    ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY) 
+    : Promise.reject(new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined"));
 
 const Payment = () => {
     const searchParams = useSearchParams();
-    const amount = Number(searchParams.get("a"));
-    const orderId = String(searchParams.get("o"))
+    const amount = searchParams ? Number(searchParams.get("a")) : 0;
+    const orderId = searchParams ? String(searchParams.get("o")) : '';
     const router = useRouter();
     const [firstName, setFirstName] = useState<string>('')
     const [lastName, setLastName] = useState<string>('')
