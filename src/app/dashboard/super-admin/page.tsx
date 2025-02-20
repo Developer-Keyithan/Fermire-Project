@@ -8,6 +8,7 @@ import Orders from "../../Components/Dashboard Components/Admins/Orders";
 import Contacts from "../../Components/Dashboard Components/Admins/Contacts";
 import Navbar from "../../Components/Navbar/Navbar";
 import Footer from "../../Components/Footer/Footer";
+import Payments from "@/app/Components/Dashboard Components/Admins/Payments";
 
 
 const adminDashboard = () => {
@@ -37,13 +38,14 @@ const adminDashboard = () => {
     findUser()
   }, [])
 
-  const panels = ["Users", "Products", "Orders", "Contacts"];
+  const panels = ["Users", "Products", "Orders", "Contacts", "Payments"];
 
   const panelComponents: { [key: string]: JSX.Element } = {
     Users: <Users />,
     Products: <Products id={user._id}/>,
     Orders: <Orders />,
-    Contacts: <Contacts />
+    Contacts: <Contacts />,
+    Payments: <Payments />
   };
 
   const handlePanelClick = (panel: string) => {
