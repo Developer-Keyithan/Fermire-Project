@@ -3,8 +3,8 @@ import { useRouter } from 'next/navigation';
 import Image, { StaticImageData } from "next/image";
 import RatingCart from '../Rating Cart/RatingCart';
 import { IoCartOutline } from 'react-icons/io5';
-// import { useState } from 'react';
-// import { GoHeart, GoHeartFill } from 'react-icons/go';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'; // Added Wishlist icons
+import { useState } from 'react';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -28,6 +28,7 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ data }) => {
     const router = useRouter();
+    const [isWishlisted, setIsWishlisted] = useState(false);
 
     const handleAddToCart = async () => {
         const id = data._id;
@@ -61,6 +62,16 @@ const Cart: React.FC<CartProps> = ({ data }) => {
         }
     };
 
+    const handleWishlistToggle = (e: React.MouseEvent) => {
+        e.stopPropagation(); // Prevent product click
+        setIsWishlisted(!isWishlisted);
+        if (!isWishlisted) {
+            toast.success("Added to Wishlist");
+        } else {
+            toast.info("Removed from Wishlist");
+        }
+    };
+
     const image = typeof data.productImages[0].imageUrl === 'string' ? data.productImages[0].imageUrl : data.productImages[0].imageUrl;
 
     const handleProduct = () => {
@@ -69,7 +80,7 @@ const Cart: React.FC<CartProps> = ({ data }) => {
     };
 
     return (
-        <div className="relative rounded-md overflow-hidden shadow-md w-[calc((100%-100px)/6)] cursor-pointer hover:scale-100">
+        <div className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 w-full cursor-pointer border border-gray-100 hover:border-primary/20 hover:-translate-y-1">
             <ToastContainer
                 position="top-center"
                 autoClose={3000}
@@ -82,24 +93,45 @@ const Cart: React.FC<CartProps> = ({ data }) => {
                 pauseOnHover
             />
             <div onClick={handleProduct}>
-                <div className="w-full h-56 rounded overflow-hidden">
-                    <Image src={image} alt={data.productName} width={244} height={244} className='w-full h-full object-cover' />
+                <div className="w-full h-64 overflow-hidden relative">
+                    <Image
+                        src={image}
+                        alt={data.productName}
+                        fill
+                        className='object-cover group-hover:scale-110 transition-transform duration-500'
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                    {/* Wishlist Button */}
+                    <button
+                        onClick={handleWishlistToggle}
+                        className="absolute top-3 right-3 p-2 rounded-full bg-white/80 hover:bg-white text-gray-500 hover:text-red-500 shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0"
+                    >
+                        {isWishlisted ? <AiFillHeart className="text-xl text-red-500" /> : <AiOutlineHeart className="text-xl" />}
+                    </button>
                 </div>
-                <div className="mt-4 px-4">
-                    <div className="flex justify-between">
-                        <h2>{data.productName}</h2>
-                        <div className="flex flex-col justify-start text-end h-12">
-                            <span className="font-semibold text-lg">Rs. {data.price.newPrice}</span>
-                            <span className="text-sm line-through">{data.price.oldPrice}</span>
-                        </div>
+                <div className="p-4 space-y-2">
+                    <div className="flex justify-between items-start">
+                        <h2 className="text-lg font-semibold text-gray-800 line-clamp-1 group-hover:text-primary transition-colors">{data.productName}</h2>
+                    </div>
+
+                    <div className="flex flex-row gap-2 items-center">
+                        <span className="text-xl font-bold text-primary">Rs. {data.price.newPrice}</span>
+                        {data.price.oldPrice && <span className="text-sm text-gray-400 line-through decoration-red-400">Rs. {data.price.oldPrice}</span>}
                     </div>
                     <div className="">
                         <RatingCart rating={data.rating || 3.5} />
                     </div>
                 </div>
             </div>
-            <div className="cart-actions w-full rounded-full text-end px-4 mb-4">
-                <button onClick={handleAddToCart} className='flex items-center gap-2 bg-primaryColor text-white hover:bg-secondaryButtonColor rounded py-1 px-4 mt-4 transition ease-in-out duration-500'>Add to Cart <IoCartOutline /></button>
+
+            <div className="px-4 pb-4">
+                <button
+                    onClick={handleAddToCart}
+                    className='w-full flex items-center justify-center gap-2 bg-primary text-white hover:bg-secondaryButtonColor hover:text-white font-medium py-2 rounded-lg transition-all duration-300 transform active:scale-95 shadow-md'
+                >
+                    Add to Cart <IoCartOutline className="text-xl" />
+                </button>
             </div>
         </div>
     );

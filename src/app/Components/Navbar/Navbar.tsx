@@ -64,12 +64,12 @@ const Navbar: React.FC = () => {
     }, []);
 
     return (
-        <div className='px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-60 py-3 flex justify-between items-center w-full sticky top-0 backdrop-blur-xl bg-white bg-opacity-40 border-primaryColor z-50'>
+        <div className='px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-60 py-4 flex justify-between items-center w-full sticky top-0 z-50 glass transition-all duration-300'>
             <div className="relative w-full">
                 {/* MOBILE */}
                 <div className="h-full flex items-center justify-between xl:hidden">
                     <Link href='/'>
-                        <p className='text-primaryColor text-4xl font-semibold'>Fermire</p>
+                        <p className='text-primary text-4xl font-bold tracking-tight'>Fermire</p>
                     </Link>
                     <Menu />
                 </div>
@@ -79,19 +79,19 @@ const Navbar: React.FC = () => {
                     {/* LEFT */}
                     <div className="flex items-center gap-12">
                         <Link href='/'>
-                            <p className='text-primaryColor text-4xl font-semibold'>Fermire</p>
+                            <p className='text-primary text-4xl font-bold tracking-tight'>Fermire</p>
                         </Link>
-                        <div className="hidden xl:flex gap-4">
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='/'>Home</Link>
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='/products'>Shop Now</Link>
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='#about' onClick={handleAboutClick}>About Us</Link>
-                            <Link className="hover:font-semibold transition ease-in-out duration-300" href='/contactus'>Contact Us</Link>
+                        <div className="hidden xl:flex gap-8">
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='/'>Home</Link>
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='/products'>Shop Now</Link>
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='#about' onClick={handleAboutClick}>About Us</Link>
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='/contactus'>Contact Us</Link>
                         </div>
                     </div>
 
                     {/* RIGHT */}
                     <div className="">
-                        <div className='flex flex-row gap-2'>
+                        <div className='flex flex-row gap-4 items-center'>
                             <SearchBar />
                             {user && <NavBarIcons userData={user} cartCount={cartCount} updateCartCount={updateCartCount} />}
                         </div>

@@ -19,8 +19,8 @@ const SearchBar = () => {
     return (
         <div>
             <form onSubmit={handleSearch} className='flex flex-row gap-2 items-center  bg-gray-200 py-2 px-4 rounded-full w-full md:w-96'>
-                <input 
-                    type="search" 
+                <input
+                    type="search"
                     placeholder='Search...'
                     className='w-full h-full outline-none bg-gray-200'
                     name='search'

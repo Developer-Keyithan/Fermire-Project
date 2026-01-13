@@ -19,7 +19,7 @@
     --secondary-button-hover-color: #834100;
     --cart-bg: #EFEFEF;
 
-    font-family: 'Poppins';
+    font-family: 'Poppins', sans-serif;
 }
 
 .productPage-product-container {

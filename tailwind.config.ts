@@ -9,25 +9,42 @@ export default {
   theme: {
     extend: {
       colors: {
-        primaryColor: '#007546',
-        secondaryColor: '#00D480',
+        // Premium Nature Palette
+        primary: '#0f5132',
+        secondary: '#2ecc71',
+        accent: '#d4af37',
+
+        // Mapping legacy names to new palette or similar
+        primaryColor: '#0f5132',
+        secondaryColor: '#2ecc71',
         inputLabelolor: '#D9D9D9',
         bgColor: '#ffffff',
         textColor: '#002718',
-        primaryButtonColor: '#00AD1d',
-        secondaryButtonColor: '#FF8000',
-        primaryButtonHoverColor: '#006B12',
-        secondaryButtonHoverColor: '#834100',
+        primaryButtonColor: '#0f5132', // Mapped to primary
+        secondaryButtonColor: '#d4af37', // Mapped to accent
+        primaryButtonHoverColor: '#0a3d24', // Darker primary
+        secondaryButtonHoverColor: '#b3922b', // Darker accent
         cartBg: '#EFEFEF',
         bgRed: '#DC2626',
-        primary: '#007546',
-        secondary: '#00D480',   
-        muted: '#D9D9D9',            
-        background: '#ffffff',       
-        foreground: '#002718',      
-        primaryButton: '#00AD1d',   
-        secondaryButton: '#FF8000', 
+
+        muted: '#D9D9D9',
+        background: '#ffffff',
+        foreground: '#002718',
         destructive: '#DC2626'
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-in-out',
+        'slide-up': 'slideUp 0.5s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(20px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
       },
     },
   },
@@ -82,15 +99,15 @@ export default {
 //           '50%': { transform: 'translateY(-15px)' }
 //         },
 //         'morph': {
-//           '0%': { 
+//           '0%': {
 //             borderRadius: '40% 60% 60% 40% / 60% 30% 70% 40%',
 //             transform: 'scale(1)'
 //           },
-//           '50%': { 
+//           '50%': {
 //             borderRadius: '50%',
 //             transform: 'scale(0.8)'
 //           },
-//           '100%': { 
+//           '100%': {
 //             borderRadius: '40% 60% 60% 40% / 60% 30% 70% 40%',
 //             transform: 'scale(1)'
 //           }
