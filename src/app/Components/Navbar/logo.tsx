@@ -1,12 +1,17 @@
 import React from 'react'
-import Logo from '../../Assets/logo.svg'
+import Image from 'next/image'
+import FermireLogo from '../../Assets/logo.svg'
 
-const logo = () => {
+const Logo = () => {
   return (
     <div>
-        <Logo />
+      <Image
+        src={FermireLogo}
+        alt="Fermire Logo"
+        className="h-full max-h-16 w-auto" 
+      />
     </div>
   )
 }
 
-export default logo
+export default Logo

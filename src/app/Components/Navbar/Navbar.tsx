@@ -7,6 +7,7 @@ import NavBarIcons from "./NavBarIcons";
 import Link from "next/link";
 import Menu from "./Menu";
 import axios from 'axios';
+import Logo from "./logo";
 
 const Navbar: React.FC = () => {
     const [user, setUser] = useState(null);
@@ -69,7 +70,7 @@ const Navbar: React.FC = () => {
                 {/* MOBILE */}
                 <div className="h-full flex items-center justify-between xl:hidden">
                     <Link href='/'>
-                        <p className='text-primary text-4xl font-bold tracking-tight'>Fermire</p>
+                        <Logo />
                     </Link>
                     <Menu />
                 </div>
@@ -79,7 +80,7 @@ const Navbar: React.FC = () => {
                     {/* LEFT */}
                     <div className="flex items-center gap-12">
                         <Link href='/'>
-                            <p className='text-primary text-4xl font-bold tracking-tight'>Fermire</p>
+                            <Logo />
                         </Link>
                         <div className="hidden xl:flex gap-8">
                             <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='/'>Home</Link>

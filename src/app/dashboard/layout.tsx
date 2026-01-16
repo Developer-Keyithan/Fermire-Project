@@ -39,7 +39,7 @@ export default function DashboardLayout({
             const { user, error } = await getUser();
 
             if (error || !user) {
-                router.push('/login');
+                router.push('/auth/login');
                 return;
             }
 

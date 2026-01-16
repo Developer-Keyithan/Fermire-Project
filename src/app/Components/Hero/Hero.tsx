@@ -7,11 +7,11 @@ const Hero: React.FC = () => {
   const router = useRouter();
 
   const handleSignup = () => {
-    router.push('/signup');
+    router.push('/auth/signup');
   };
 
   const handleLogin = () => {
-    router.push('/login');
+    router.push('/auth/login');
   };
 
   return (

@@ -30,8 +30,8 @@ const Profile: React.FC = () => {
 
   const router = useRouter();
 
-  const handleLogin = () => router.push('/login');
-  const handleSignup = () => router.push('/signup');
+  const handleLogin = () => router.push('/auth/login');
+  const handleSignup = () => router.push('/auth/signup');
   const handleLogout = () => {
     setIsVisibleConfirm(true)
     setIsLogoutVisible(false)
@@ -44,7 +44,7 @@ const Profile: React.FC = () => {
         toast.success('Logout Successful');
         setIsLogoutVisible(false);
         setClose(true);
-        router.push('/login');
+        router.push('/auth/login');
       } else {
         toast.error('Oops! Logout Failed.');
       }
