@@ -167,7 +167,7 @@ const Login: React.FC = () => {
 
                     <div className="mt-6 text-center relative z-10">
                         <p className="text-sm text-gray-600">
-                            Don't have an account?{' '}
+                            Don&apos;t have an account?{' '}
                             <Link href="/auth/signup" className="font-medium text-secondary hover:text-green-600 transition-colors duration-200">
                                 Sign up
                             </Link>
