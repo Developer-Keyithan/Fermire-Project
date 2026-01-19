@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body style="font-family: 'Poppins', sans-serif;">
+    <div class="nav-wrapper">
+        <div class="bubble hover"></div>
+        <div class="bubble active"></div>
+        <nav class="nav">
+            <a href="#" class="active">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Portfolio</a>
+            <a href="#">Blog</a>
+        </nav>
+    </div>
+</body>
+<script>
+    const navs = document.querySelectorAll('.nav a');
+    navs.forEach((nav) => {
+        nav.addEventListener('click', () => {
+            navs.forEach((nav) => {
+                nav.classList.remove('active');
+            });
+            nav.classList.add('active');
+        });
+    });
+</script>
+
+</html>

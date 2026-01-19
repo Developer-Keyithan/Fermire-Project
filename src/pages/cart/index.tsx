@@ -8,6 +8,8 @@ import { RiUnpinFill } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import Link from 'next/link';
+import { IoCartOutline } from "react-icons/io5";
 
 interface CartItem {
     price: { newPrice: number };
@@ -185,7 +187,22 @@ function CartPage() {
             <div className='flex mx-60 my-10 gap-20'>
                 <div className='w-3/5 h-[84vh]'>
                     {cartItems.length === 0 ? (
-                        <p>Your cart is empty.</p>
+                        <div className="flex flex-col items-center justify-center w-full h-full text-center">
+                            <div className="bg-gray-50 p-8 rounded-full mb-6 border border-gray-100 shadow-inner">
+                                <IoCartOutline className="text-6xl text-gray-300" />
+                            </div>
+                            <h2 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h2>
+                            <p className="text-gray-500 mb-8 max-w-sm">
+                                Looks like you haven't added anything to your cart yet.
+                                Browse our fresh produce and start healthy living!
+                            </p>
+                            <Link
+                                href="/products"
+                                className="bg-primary hover:bg-green-800 text-white px-8 py-3 rounded-xl font-medium shadow-lg shadow-green-900/10 hover:shadow-xl transition-all transform hover:-translate-y-1 block"
+                            >
+                                Start Shopping
+                            </Link>
+                        </div>
                     ) : (
                         <div className='w-full h-full'>
                             <h2 className='font-semibold text-2xl mb-5'>Your cart Items</h2>

@@ -6,7 +6,7 @@ import { IoCartOutline } from 'react-icons/io5';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai'; // Added Wishlist icons
 import { useState } from 'react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface ProductData {
     _id?: string;
@@ -81,17 +81,6 @@ const Cart: React.FC<CartProps> = ({ data }) => {
 
     return (
         <div className="group relative bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 w-full cursor-pointer border border-gray-100 hover:border-primary/20 hover:-translate-y-1">
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
             <div onClick={handleProduct}>
                 <div className="w-full h-64 overflow-hidden relative">
                     <Image

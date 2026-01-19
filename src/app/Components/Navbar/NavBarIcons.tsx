@@ -6,8 +6,6 @@ import Profile from "../Profile/Profile";
 import Link from "next/link";
 import Image from "next/image";
 
-
-
 interface NavBarIconsProps {
     userData: {
         firstName: string;
@@ -56,9 +54,11 @@ const NavBarIcons: React.FC<NavBarIconsProps> = ({ userData, cartCount}) => {
             <div className="relative text-2xl flex justify-center items-center cursor-pointer">
                 <Link href="/cart">
                     <IoCartOutline />
-                    <div className="absolute -top-2 -right-2 py-[1px] px-2 bg-bgRed rounded-full text-white text-xs">
-                        {cartCount}
-                    </div>
+                    {cartCount > 0 && (
+                        <div className="absolute -top-2 -right-2 py-[1px] px-2 bg-bgRed rounded-full text-white text-xs">
+                            {cartCount}
+                        </div>
+                    )}
                 </Link>
             </div>
             {/* {isCartOpen && <CartModel />} */}

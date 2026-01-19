@@ -1,9 +1,12 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 const Hero: React.FC = () => {
+  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
   const handleSignup = () => {
@@ -13,6 +16,25 @@ const Hero: React.FC = () => {
   const handleLogin = () => {
     router.push('/auth/login');
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const { data } = await axios.get('/api/cookie');
+        const response = await axios.post('/api/user/get-user', { userId: data.user.id });
+        setUser(response.data.user);
+      } catch (error) {
+        console.log(error)
+        setUser(null);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    setIsLoggedIn(!!user);
+  }, [user]);
 
   return (
     <div className="relative w-full h-[80vh] flex items-center bg-gray-900 overflow-hidden">
@@ -38,14 +60,16 @@ const Hero: React.FC = () => {
         <p className="text-lg md:text-2xl font-light max-w-lg text-gray-200">
           Welcome to <strong className="text-accent font-semibold">Fermire</strong>. We believe in better agriculture for a better future.
         </p>
-        <div className="flex flex-row gap-4 mt-8">
-          <button onClick={handleSignup} className="px-8 py-3 bg-primary hover:bg-green-800 text-white font-semibold rounded-full shadow-lg transition-transform transform hover:scale-105 active:scale-95">
-            Sign Up
-          </button>
-          <button onClick={handleLogin} className="px-8 py-3 bg-transparent border-2 border-white hover:bg-white hover:text-primary text-white font-semibold rounded-full shadow-lg transition-all duration-300">
-            Login
-          </button>
-        </div>
+        {!isLoggedIn &&
+          <div className="flex flex-row gap-4 mt-8">
+            <button onClick={handleSignup} className="px-8 py-3 bg-primary hover:bg-green-800 text-white font-semibold rounded-full shadow-lg transition-transform transform hover:scale-105 active:scale-95">
+              Sign Up
+            </button>
+            <button onClick={handleLogin} className="px-8 py-3 bg-transparent border-2 border-white hover:bg-white hover:text-primary text-white font-semibold rounded-full shadow-lg transition-all duration-300">
+              Login
+            </button>
+          </div>
+        }
       </div>
     </div>
   );

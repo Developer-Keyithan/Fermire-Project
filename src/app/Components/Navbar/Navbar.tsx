@@ -47,7 +47,6 @@ const Navbar: React.FC = () => {
         }
     };
 
-
     useEffect(() => {
         const fetchUser = async () => {
             try {
@@ -65,8 +64,8 @@ const Navbar: React.FC = () => {
     }, []);
 
     return (
-        <div className='px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-60 py-4 flex justify-between items-center w-full sticky top-0 z-50 glass transition-all duration-300'>
-            <div className="relative w-full">
+        <div className='px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-60 py-2 flex justify-between items-center w-full sticky top-0 z-50 glass border-b border-white border-opacity-30 transition-all duration-300'>
+            <div className="w-full">
                 {/* MOBILE */}
                 <div className="h-full flex items-center justify-between xl:hidden">
                     <Link href='/'>
@@ -82,11 +81,11 @@ const Navbar: React.FC = () => {
                         <Link href='/'>
                             <Logo />
                         </Link>
-                        <div className="hidden xl:flex gap-8">
-                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='/'>Home</Link>
-                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='/products'>Shop Now</Link>
-                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='#about' onClick={handleAboutClick}>About Us</Link>
-                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300" href='/contactus'>Contact Us</Link>
+                        <div className="hidden xl:flex">
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300 hover:bg-secondary/50 px-5 py-2 rounded-full" href='/'>Home</Link>
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300 hover:bg-secondary/50 px-5 py-2 rounded-full" href='/products'>Shop Now</Link>
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300 hover:bg-secondary/50 px-5 py-2 rounded-full" href='#about' onClick={handleAboutClick}>About Us</Link>
+                            <Link className="text-gray-700 hover:text-primary font-medium transition-colors duration-300 hover:bg-secondary/50 px-5 py-2 rounded-full" href='/contactus'>Contact Us</Link>
                         </div>
                     </div>
 

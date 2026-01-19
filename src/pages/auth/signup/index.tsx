@@ -69,12 +69,12 @@ const SignUp = () => {
         }
 
         try {
-            const response = await axios.post('/api/user', {
+            const response = await axios.post('/api/auth/register', {
                 firstName, lastName, email, mobileNumber, confirmPassword, userType
             });
 
             if (response.status === 200) {
-                const token = response.data.token; // Get the token from the response
+                const token = response.data.token;
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 toast.success(response.data.message);
                 if (response.data.user.userType === 'consumer') {

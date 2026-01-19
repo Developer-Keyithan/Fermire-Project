@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import Navbar from '../../../app/Components/Navbar/Navbar';
 import Footer from '../../../app/Components/Footer/Footer';
@@ -9,7 +8,6 @@ import { MdEmail } from "react-icons/md";
 const ForgotPassword = () => {
     const [email, setEmail] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,7 +26,6 @@ const ForgotPassword = () => {
             // Simulating success
             setTimeout(() => {
                 toast.success('Password reset link has been sent to your email.');
-                // router.push('/reset-password'); // Usually user stays or goes to login
             }, 1000);
 
         } catch (error) {

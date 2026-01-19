@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import Navbar from '../../../app/Components/Navbar/Navbar';
 import Footer from '../../../app/Components/Footer/Footer';
 import { MdLockReset, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import axios from 'axios';
 
 const ResetPassword = () => {
     const [password, setPassword] = useState('');
@@ -26,19 +27,16 @@ const ResetPassword = () => {
         }
 
         try {
-            // Mock API call
-            // const response = await axios.post('/api/user/reset-password', { password, token: router.query.token });
-
-            setTimeout(() => {
+            const response = await axios.post('/api/auth/reset-password', { password, token: router.query.token });
+            if (response.status === 200) {
                 toast.success('Password has been reset successfully');
                 router.push('/login');
-            }, 1000);
-
+            }
         } catch (error) {
             console.error(error);
             toast.error('Something went wrong. Please try again.');
         } finally {
-            setTimeout(() => setIsLoading(false), 1000);
+            setIsLoading(false);
         }
     };
 

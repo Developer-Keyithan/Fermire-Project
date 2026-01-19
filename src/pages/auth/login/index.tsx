@@ -52,7 +52,7 @@ const Login: React.FC = () => {
         }
 
         try {
-            const response = await axios.post('/api/user/auth/login', {
+            const response = await axios.post('/api/auth/login', {
                 emailOrMobileNumber,
                 password,
             });
