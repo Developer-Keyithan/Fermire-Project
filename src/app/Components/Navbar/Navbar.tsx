@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
                 {/* BIGGER SCREENS */}
                 <div className="hidden xl:flex items-center justify-between h-full w-full">
                     {/* LEFT */}
-                    <div className="flex items-center gap-12">
+                    <div className="flex items-center gap-8">
                         <Link href='/'>
                             <Logo />
                         </Link>
