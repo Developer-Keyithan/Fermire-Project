@@ -57,7 +57,7 @@ const Products: React.FC<FilterProps> = ({ data }) => {
         // Let's assume strict filtering if category exists, else lax.
         // For now, if activeFilters has items, we check if productName contains any of them (as a fallback).
         const matchesCategory = activeFilters.length === 0 || activeFilters.some(filter =>
-            // @ts-ignore: Assuming category might exist in data at runtime or matching name
+            // @ts-expect-error: Assuming category might exist in data at runtime or matching name
             (item.category && item.category === filter) ||
             item.productName.toLowerCase().includes(filter.toLowerCase()) ||
             (filter === 'In-Stock') // Placeholder logic
